@@ -1,8 +1,8 @@
 {
 	"format_version": 2,
 	"header": {
-		"description": "ブロックデータのバックアップができるアドオンです\nmade by かろん",
-		"name": "とある骨のアドオン",
+		"description": "とあるシリーズを再現したアドオンです\nmade by かろん",
+		"name": "とある骨の拡張機能",
 		"uuid": "ba6651c4-2ddc-4ea1-bf9e-af036b468594",
 		"version": [
 			1,
