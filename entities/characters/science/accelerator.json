@@ -71,7 +71,7 @@
       },
       "minecraft:movement.basic": {},
       "minecraft:movement": {
-        "value": 0.1
+        "value": 0.3
       },
       "minecraft:jump.static": {},
       "minecraft:can_climb": {},
