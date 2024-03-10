@@ -54,7 +54,7 @@ export function Lightning_circle(entity) {
 export function Railgun(entity, time) {
     let shouldStop = false;
     try {
-        if (entity instanceof Player) {
+        if ((entity instanceof Player)) {
             entity.runCommand(`inputpermission set @s camera disabled`)
             entity.runCommand(`inputpermission set @s movement disabled`)
         }
