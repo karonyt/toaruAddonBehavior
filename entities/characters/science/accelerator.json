@@ -69,7 +69,8 @@
         "can_break_doors": true,
         "avoid_portals": false
       },
-      "minecraft:movement.basic": {
+      "minecraft:movement.basic": {},
+      "minecraft:movement": {
         "value": 0.1
       },
       "minecraft:jump.static": {},
@@ -140,7 +141,7 @@
                 }
               ]
             },
-            "max_dist": 50
+            "max_dist": 35
           }
         ]
       },
@@ -175,7 +176,7 @@
         ]
       },
       "minecraft:boss": {
-        "name":"entity.karo:accelerator.name",
+        "name": "entity.karo:accelerator.name",
         "hud_range": 10
       }
     },

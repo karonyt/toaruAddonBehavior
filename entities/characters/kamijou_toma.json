@@ -64,8 +64,9 @@
         "can_break_doors": true,
         "avoid_portals": false
       },
-      "minecraft:movement.basic": {
-        "value": 0.15
+      "minecraft:movement.basic": {},
+      "minecraft:movement": {
+        "value": 0.1
       },
       "minecraft:jump.static": {},
       "minecraft:can_climb": {},
@@ -84,14 +85,6 @@
       },
       "minecraft:behavior.melee_attack": {
         "priority": 3
-      },
-      "minecraft:behavior.stomp_turtle_egg": {
-        "priority": 4,
-        "speed_multiplier": 1,
-        "search_range": 10,
-        "search_height": 2,
-        "goal_radius": 1.14,
-        "interval": 20
       },
       "minecraft:behavior.pickup_items": {
         "priority": 6,
