@@ -5,15 +5,36 @@ import { Vec3 } from "../../../lib/utils/vec3";
  * @param {Entity} entity 
  */
 export function Lightning_straight(entity) {
+    let shouldStop = false
     try {
         const { x, y, z } = entity.location;
         const location = new Vec3(x, y, z);
         const direction = entity.getViewDirection()
         for (let i = 1; i < 10; i++) {
+            if (shouldStop) return;
             system.runTimeout(() => {
                 try {
-                    entity.dimension.spawnEntity("lightning_bolt", location.offsetDirct(0, 0, 3 + i * 2, direction));
-
+                    entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4, direction), maxDistance: 3 }).forEach(
+                        mob => {
+                            if (mob.hasTag(`imagine_breaker`)) {
+                                shouldStop = true;
+                                return;
+                            }
+                            if (mob.id !== entity.id) {
+                                if (mob.hasTag(`ippou_tuukou`)) {
+                                    mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
+                                        p => p.playSound(``)
+                                    )
+                                    Lightning_straight(mob);
+                                    shouldStop = true;
+                                    return;
+                                }
+                            }
+                        }
+                    )
+                    if (!shouldStop) {
+                        entity.dimension.spawnEntity("lightning_bolt", location.offsetDirct(0, 0, 3 + i * 2, direction));
+                    }
                 } catch (error) {
 
                 }
@@ -28,15 +49,37 @@ export function Lightning_straight(entity) {
  * @param {Entity} entity 
  */
 export function Lightning_circle(entity) {
+    let shouldStop = false
     try {
         const { x, y, z } = entity.location;
         const location = new Vec3(x, y, z);
         const direction = entity.getViewDirection()
         for (let i = 1; i < 10; i++) {
-            try {
-                entity.dimension.spawnEntity("lightning_bolt", Vec3.circle(location, 5, i * 40));
-                entity.dimension.spawnEntity("lightning_bolt", Vec3.circle(location, 10, i * 40));
-            } catch (error) { }
+            if (shouldStop) return;
+            entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4, direction), maxDistance: 3 }).forEach(
+                mob => {
+                    if (mob.hasTag(`imagine_breaker`)) {
+                        shouldStop = true;
+                        return;
+                    }
+                    if (mob.id !== entity.id) {
+                        if (mob.hasTag(`ippou_tuukou`)) {
+                            mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
+                                p => p.playSound(``)
+                            )
+                            Lightning_straight(mob);
+                            shouldStop = true;
+                            return;
+                        }
+                    }
+                }
+            )
+            if (!shouldStop) {
+                try {
+                    entity.dimension.spawnEntity("lightning_bolt", Vec3.circle(location, 5, i * 40));
+                    entity.dimension.spawnEntity("lightning_bolt", Vec3.circle(location, 10, i * 40));
+                } catch (error) { }
+            };
         }
     } catch (error) {
 
@@ -89,9 +132,9 @@ export function Railgun(entity, time) {
                             }
                         )
                         if (!shouldStop) {
-                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 2, { allowUnderwater: true, breaksBlocks: false });
+                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 1, { allowUnderwater: true, breaksBlocks: false });
                         }
-                        
+
                     } catch (error) { }
                 }, Math.ceil(i / 5))
             }
