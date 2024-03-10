@@ -69,7 +69,9 @@
         "can_break_doors": true,
         "avoid_portals": false
       },
-      "minecraft:movement.basic": {},
+      "minecraft:movement.basic": {
+        "value": 0.1
+      },
       "minecraft:jump.static": {},
       "minecraft:can_climb": {},
       "minecraft:environment_sensor": {

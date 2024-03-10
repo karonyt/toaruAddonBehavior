@@ -64,7 +64,9 @@
         "can_break_doors": true,
         "avoid_portals": false
       },
-      "minecraft:movement.basic": {},
+      "minecraft:movement.basic": {
+        "value": 0.15
+      },
       "minecraft:jump.static": {},
       "minecraft:can_climb": {},
       "minecraft:environment_sensor": {
@@ -122,8 +124,7 @@
         "is_pushable": true,
         "is_pushable_by_piston": true
       },
-      "minecraft:damage_sensor": {
-      },
+      "minecraft:damage_sensor": {},
       "minecraft:boss": {
         "name": "entity.karo:kamijou_toma.name",
         "hud_range": 10
