@@ -2,7 +2,7 @@
   "format_version": "1.20.10",
   "minecraft:entity": {
     "description": {
-      "identifier": "karo:accelerator",
+      "identifier": "karo:kamijou_toma",
       "is_spawnable": true,
       "is_summonable": true,
       "is_experimental": false
@@ -24,16 +24,17 @@
         "family": [
           "human",
           "science",
+          "magic",
           "student",
-          "level5"
+          "level0"
         ]
       },
       "minecraft:loot": {
-        "table": "loot_tables/entities/characters/science/accelerator.json"
+        "table": "loot_tables/entities/characters/kamijou_toma.json"
       },
       "minecraft:health": {
-        "value": 60,
-        "max": 60
+        "value": 600,
+        "max": 600
       },
       "minecraft:hurt_on_condition": {
         "damage_conditions": [
@@ -45,12 +46,6 @@
                   "subject": "self",
                   "operator": "==",
                   "value": true
-                },
-                {
-                  "test": "has_tag",
-                  "subject": "self",
-                  "operator": "!=",
-                  "value": "ippou_tuukou"
                 }
               ]
             },
@@ -122,58 +117,15 @@
       "minecraft:behavior.hurt_by_target": {
         "priority": 1
       },
-      "minecraft:behavior.nearest_attackable_target": {
-        "priority": 2,
-        "must_see": true,
-        "reselect_targets": true,
-        "within_radius": 25.0,
-        "entity_types": [
-          {
-            "filters": {
-              "any_of": [
-                {
-                  "test": "is_family",
-                  "subject": "other",
-                  "value": "kihara"
-                }
-              ]
-            },
-            "max_dist": 50
-          }
-        ]
-      },
       "minecraft:physics": {},
       "minecraft:pushable": {
         "is_pushable": true,
         "is_pushable_by_piston": true
       },
       "minecraft:damage_sensor": {
-        "triggers": [
-          {
-            "on_damage": {
-              "filters": {
-                "all_of": [
-                  {
-                    "test": "has_tag",
-                    "subject": "other",
-                    "operator": "!=",
-                    "value": "allow_damage_ippou_tuukou"
-                  },
-                  {
-                    "test": "has_tag",
-                    "subject": "self",
-                    "operator": "==",
-                    "value": "ippou_tuukou"
-                  }
-                ]
-              }
-            },
-            "deals_damage": false
-          }
-        ]
       },
       "minecraft:boss": {
-        "name":"entity.karo:accelerator.name",
+        "name": "entity.karo:kamijou_toma.name",
         "hud_range": 10
       }
     },
