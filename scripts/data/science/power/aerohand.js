@@ -13,14 +13,19 @@ export function Knockback_straight(entity) {
             system.runTimeout(() => {
                 try {
                     entity.dimension.getEntities({ location: location.offsetDirct(0, 1, i * 2, direction), maxDistance: 3 }).forEach(mob => {
-                        if (mob.id !== entity.id) {
-                            try {
-                                mob.applyKnockback(direction.x, direction.z, 4, 0.5)
-                            } catch (error) {
-                                mob.applyImpulse(location.offsetDirct(0, 0.5, i * 5, direction).offset(-l.x, -l.y, -l.z))
+                        if (!mob.hasTag(`imagine_breaker`)) {
+                            if (mob.id !== entity.id) {
+                                if (mob.hasTag(`ippou_tuukou`)) {
+                                    Knockback_straight(mob);
+                                } else {
+                                    try {
+                                        mob.applyKnockback(direction.x, direction.z, 4, 0.5)
+                                    } catch (error) {
+                                        mob.applyImpulse(location.offsetDirct(0, 0.5, i * 5, direction).offset(-l.x, -l.y, -l.z))
+                                    }
+                                }
                             }
                         }
-
                     });
                     const l = location;
                     entity.dimension.spawnParticle(`minecraft:dragon_destroy_block`, location.offsetDirct(0, 1, i * 5, direction));
@@ -28,7 +33,7 @@ export function Knockback_straight(entity) {
                 } catch (error) {
 
                 }
-            }, 3 * i);
+            }, i);
         }
     } catch (error) {
 
