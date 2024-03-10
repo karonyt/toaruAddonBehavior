@@ -7,7 +7,7 @@ world.afterEvents.itemUse.subscribe((ev)=>{
      if(!ev.itemStack.nameTag) return
      switch(ev.itemStack.nameTag) {
           case `超電磁砲`: {
-               Railgun(ev.source);
+               Railgun(ev.source,40);
                break;
           }
           case `円盤雷撃`: {
