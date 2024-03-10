@@ -3,14 +3,14 @@
  * 反射(攻撃の無効化部分)はエンティティjsonで行うものとする
  */
 
-import { world, system, Player, Entity, Vector3 } from "@minecraft/server";
+import { world, system, Player, Entity } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 
 /**
  * 走りのスピードを変更するフォームを表示する
  * @param {Player} player 
  */
-export function speed_change(player) {
+export function Speed_change(player) {
     const form = new ModalFormData()
     form.title(`速度変更 / Speed Change`)
     form.slider(`スピード選択(デフォルトは10)`, 1, 500, 1, player.getDynamicProperty(`speed_vector`) ?? 10)
