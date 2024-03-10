@@ -68,7 +68,7 @@ export function Railgun(entity, time) {
                 system.runTimeout(() => {
                     try {
 
-                        entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 3, direction), maxDistance: 3 }).forEach(
+                        entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4, direction), maxDistance: 3 }).forEach(
                             mob => {
                                 if (mob.hasTag(`imagine_breaker`)) {
                                     shouldStop = true;
@@ -88,8 +88,10 @@ export function Railgun(entity, time) {
                                 }
                             }
                         )
-                        if (shouldStop) return;
-                        entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 2, { allowUnderwater: true, breaksBlocks: false });
+                        if (!shouldStop) {
+                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 2, { allowUnderwater: true, breaksBlocks: false });
+                        }
+                        
                     } catch (error) { }
                 }, Math.ceil(i / 5))
             }
