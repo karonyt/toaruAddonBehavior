@@ -33,8 +33,8 @@
         "table": "loot_tables/entities/characters/science/misaka_mikoto.json"
       },
       "minecraft:health": {
-        "value": 300,
-        "max": 300
+        "value": 80,
+        "max": 80
       },
       "minecraft:hurt_on_condition": {
         "damage_conditions": [
