@@ -33,8 +33,8 @@
         "table": "loot_tables/entities/characters/kamijou_toma.json"
       },
       "minecraft:health": {
-        "value": 600,
-        "max": 600
+        "value": 300,
+        "max": 300
       },
       "minecraft:hurt_on_condition": {
         "damage_conditions": [
