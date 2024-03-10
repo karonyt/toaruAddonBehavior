@@ -18,6 +18,7 @@ export function Knockback_straight(entity) {
                         if (mob.id !== entity.id) {
                             if (mob.hasTag(`ippou_tuukou`)) {
                                 Knockback_straight(mob);
+                                //この関数を終わらせる処理をしたい
                                 return;
                             } else {
                                 try {
