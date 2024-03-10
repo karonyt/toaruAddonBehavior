@@ -95,7 +95,7 @@ export function Railgun(entity, time) {
             }
         }, time)
         system.runTimeout(() => {
-            if (entity instanceof Player) {
+            if ((entity instanceof Player)) {
                 entity.runCommand(`inputpermission set @s camera enabled`)
                 entity.runCommand(`inputpermission set @s movement enabled`)
             }
