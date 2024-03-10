@@ -67,12 +67,13 @@ export function Railgun(entity, time) {
                 if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction)).isAir) return;
                 system.runTimeout(() => {
                     try {
-                        if (mob.hasTag(`imagine_breaker`)) {
-                            shouldStop = true;
-                            return;
-                        }
+
                         entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 3, direction), maxDistance: 3 }).forEach(
                             mob => {
+                                if (mob.hasTag(`imagine_breaker`)) {
+                                    shouldStop = true;
+                                    return;
+                                }
                                 if (mob.id !== entity.id) {
                                     if (mob.hasTag(`ippou_tuukou`)) {
                                         mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
