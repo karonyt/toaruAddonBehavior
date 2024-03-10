@@ -67,12 +67,12 @@ export function Railgun(entity) {
                     } catch (error) { }
                 }, Math.ceil(i / 5))
             }
-        }, 80)
+        }, 40)
         system.runTimeout(() => {
             if (entity instanceof Player) {
                 entity.runCommand(`inputpermission set @s camera enabled`)
                 entity.runCommand(`inputpermission set @s movement enabled`)
             }
-        }, 100)
+        }, 60)
     } catch (error) { }
 }
