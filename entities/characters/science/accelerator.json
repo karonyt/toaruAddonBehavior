@@ -172,6 +172,7 @@
         ]
       },
       "minecraft:boss": {
+        "name":"entity.karo:accelerator.name",
         "hud_range": 10
       }
     },
