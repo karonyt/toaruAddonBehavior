@@ -137,7 +137,7 @@
                     "test": "has_tag",
                     "subject": "other",
                     "operator": "!=",
-                    "value": "allow_damage_ippou_tuukou"
+                    "value": "imagine_breaker"
                   },
                   {
                     "test": "has_tag",
