@@ -97,10 +97,6 @@
           "minecraft:glow_ink_sac"
         ]
       },
-      "minecraft:behavior.random_stroll": {
-        "priority": 7,
-        "speed_multiplier": 1
-      },
       "minecraft:behavior.look_at_player": {
         "priority": 8,
         "look_distance": 6,
