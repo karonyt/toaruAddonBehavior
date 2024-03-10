@@ -91,29 +91,6 @@
       "minecraft:behavior.melee_attack": {
         "priority": 3
       },
-      "minecraft:behavior.stomp_turtle_egg": {
-        "priority": 4,
-        "speed_multiplier": 1,
-        "search_range": 10,
-        "search_height": 2,
-        "goal_radius": 1.14,
-        "interval": 20
-      },
-      "minecraft:behavior.pickup_items": {
-        "priority": 6,
-        "max_dist": 3,
-        "goal_radius": 2,
-        "speed_multiplier": 1.0,
-        "pickup_based_on_chance": true,
-        "can_pickup_any_item": true,
-        "excluded_items": [
-          "minecraft:glow_ink_sac"
-        ]
-      },
-      "minecraft:behavior.random_stroll": {
-        "priority": 7,
-        "speed_multiplier": 1
-      },
       "minecraft:behavior.look_at_player": {
         "priority": 8,
         "look_distance": 6,
