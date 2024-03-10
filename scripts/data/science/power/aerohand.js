@@ -10,7 +10,7 @@ export function Knockback_straight(entity) {
         const location = new Vec3(x, y, z);
         const direction = entity.getViewDirection()
         for (let i = 1; i < 10; i++) {
-            if(!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 2, direction)).isAir) return;
+            if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 2, direction)).isAir) return;
             system.runTimeout(() => {
                 try {
                     entity.dimension.getEntities({ location: location.offsetDirct(0, 1, i * 2, direction), maxDistance: 3 }).forEach(mob => {
@@ -31,13 +31,8 @@ export function Knockback_straight(entity) {
                     });
                     const l = location;
                     entity.dimension.spawnParticle(`minecraft:dragon_destroy_block`, location.offsetDirct(0, 1, i * 5, direction));
-                } catch (error) {
-
-                }
-
+                } catch (error) { }
             }, i);
         }
-    } catch (error) {
-
-    }
+    } catch (error) { }
 }
