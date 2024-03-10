@@ -84,7 +84,6 @@ export function Railgun(entity, time) {
                                     } else {
                                         mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity })
                                     }
-
                                 }
                             }
                         )
