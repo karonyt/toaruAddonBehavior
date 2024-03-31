@@ -24,7 +24,7 @@ export function Knockback_straight(entity) {
                     if (mob.id !== entity.id) {
                         if (mob.hasTag(`ippou_tuukou`)) {
                             mob.dimension.getPlayers({location: mob.location,maxDistance: 30}).forEach(
-                                p => p.playSound(`reflection`)
+                                p => p.playSound(`reflection`,{location: mob.location})
                             );
                             Knockback_straight(mob);
                             shouldStop = true;
