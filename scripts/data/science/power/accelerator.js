@@ -3,8 +3,10 @@
  * 反射(攻撃の無効化部分)はエンティティjsonで行うものとする
  */
 
-import { world, system, Player, Entity } from "@minecraft/server";
+import { world, system, Player, Entity, EntityDamageCause } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
+import weaponDamage from "../../../lib/database/weaponDamage";
+import { Vec3 } from "../../../lib/utils/vec3";
 
 /**
  * 走りのスピードを変更するフォームを表示する
@@ -58,7 +60,7 @@ export function teleport(source, entity, location, title) {
             try {
                 const values = rs.formValues
                 entity.teleport({ x: Number(values[0]), y: Number(values[1]), z: Number(values[2]) })
-            } catch (error) { 
+            } catch (error) {
                 source.sendMessage(`§c入力データが無効です`)
             }
         })
@@ -66,7 +68,24 @@ export function teleport(source, entity, location, title) {
         try {
             const values = rs.formValues
             entity.teleport(location)
-        } catch (error) { 
+        } catch (error) {
         }
     }
 }
+
+world.afterEvents.entityHitEntity.subscribe((ev) => {
+    const { hitEntity, damagingEntity } = ev;
+    if (!hitEntity.hasTag(`ippou_tuukou`)) return;
+    if (damagingEntity instanceof Player) {
+        damagingEntity.playSound(`reflection`, { location: hitEntity.location });
+        const mainHandId = damagingEntity.getComponent('inventory').container.getItem(damagingEntity.selectedSlot)?.typeId;
+        let reflectionDamage = 1;
+        if (mainHandId in weaponDamage) {
+            reflectionDamage = weaponDamage[mainHandId];
+        };
+        const { x: rx, z: rz } = hitEntity.getViewDirection();
+        damagingEntity.applyKnockback(rx,rz,5,0.2);
+        damagingEntity.applyDamage(reflectionDamage,{damagingEntity: hitEntity,cause: EntityDamageCause.entityAttack});
+        return;
+    }
+});
