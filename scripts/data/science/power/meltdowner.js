@@ -36,6 +36,7 @@ export function MeltdownerStandby(entity) {
 export function Meltdowner(entity, time) {
     let shouldStop = false;
     const count = meltDownerCount.get(entity.id) ?? 0;
+    if(count === 10) return;
     try {
         if ((entity instanceof Player)) {
             entity.runCommand(`inputpermission set @s camera disabled`);
