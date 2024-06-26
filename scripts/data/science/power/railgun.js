@@ -107,7 +107,7 @@ export function Railgun(entity, time) {
             const direction = entity.getViewDirection();
             for (let i = 0; i < 13; i++) {
                 if (shouldStop) return;
-                if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction)).isAir) return;
+                if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction))?.isAir) return;
                 system.runTimeout(() => {
                     try {
                         for (let i2 = 0; i2 < 17; i2++) {
