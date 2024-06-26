@@ -110,8 +110,8 @@ export function Railgun(entity, time) {
                 if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction)).isAir) return;
                 system.runTimeout(() => {
                     try {
-                        for(let i2 = 0;i2 < 5;i2++) {
-                            entity.dimension.spawnParticle(`karo:railgun_orbit`,location.offsetDirct(0, 2, i * 4 + i2, direction));
+                        for(let i2 = 0;i2 < 17;i2++) {
+                            entity.dimension.spawnParticle(`karo:railgun_orbit`,location.offsetDirct(0, 2, i * 4 + (i2 / 4), direction));
                         };
                         entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4, direction), maxDistance: 3 }).forEach(
                             mob => {
