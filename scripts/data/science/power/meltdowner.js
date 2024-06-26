@@ -1,4 +1,4 @@
-import { BlockVolume, Entity, EntityDamageCause, Player, system } from "@minecraft/server";
+import { BlockVolume, Entity, EntityDamageCause, Player, system, world } from "@minecraft/server";
 import { Vec3 } from "../../../lib/utils/vec3";
 
 const meltDownerCount = new Map();
@@ -41,7 +41,6 @@ export function Meltdowner(entity, time) {
     if (count === 10) return;
     try {
         if ((entity instanceof Player)) {
-            entity.runCommand(`inputpermission set @s camera disabled`);
             entity.runCommand(`inputpermission set @s movement disabled`);
         } else {
             entity.addEffect(`slowness`, time + 10, { amplifier: 10 + time, showParticles: false });
@@ -74,6 +73,7 @@ export function Meltdowner(entity, time) {
                 if (shouldStop) {
                     if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
                         let value = meltDownerCount.get(entity.id) ?? 1;
+                        if(value === 0) return;
                         meltDownerCount.set(entity.id, value - 1);
                         return;
                     } else {
@@ -117,6 +117,7 @@ export function Meltdowner(entity, time) {
                         };
                     } catch (error) {
                         let value = meltDownerCount.get(entity.id) ?? 1;
+                        if(value === 0) return;
                         meltDownerCount.set(entity.id, value - 1);
                     };
                 }, Math.ceil(i / 5));
@@ -125,7 +126,6 @@ export function Meltdowner(entity, time) {
         system.runTimeout(() => {
             if ((entity instanceof Player)) {
                 entity.removeTag(`meltdown_charge`);
-                entity.runCommand(`inputpermission set @s camera enabled`);
                 entity.runCommand(`inputpermission set @s movement enabled`);
             };
         }, time + 20);
