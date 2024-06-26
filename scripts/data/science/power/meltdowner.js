@@ -53,6 +53,7 @@ export function Meltdowner(entity, time) {
                 entity.addTag(`meltdown_charge`);
                 if (entity.addTag(`cancel_meltdown`)) {
                     entity.removeTag(`cancel_meltdown`);
+                    entity.removeTag(`meltdown_charge`);
                     return;
                 };
                 entity.dimension.spawnParticle(`meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2]));
