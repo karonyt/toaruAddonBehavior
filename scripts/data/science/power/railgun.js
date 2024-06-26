@@ -112,7 +112,7 @@ export function Railgun(entity, time) {
                     try {
                         for (let i2 = 0; i2 < 17; i2++) {
                             entity.dimension.spawnParticle(`karo:railgun_orbit`, location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction));
-                            entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), volume: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction) ,maxDistance: 3}).forEach(
+                            entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), volume: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction) ,maxDistance: 0.1}).forEach(
                                 mob => {
                                     if (mob.hasTag(`imagine_breaker`)) {
                                         shouldStop = true;
