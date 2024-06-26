@@ -23,9 +23,10 @@ export function MeltdownerStandby(entity) {
     const count = meltDownerCount.get(entity.id) ?? 0;
     const { x, y, z } = entity.location;
     const location = new Vec3(x, y, z);
+    const direction = entity.getViewDirection();
     for (let i = count; i < 10; i++) {
         if (i === 10) return;
-        entity.dimension.spawnParticle(`meltdowner_standby`, location.offset(meltdownerPosition[i * 3], meltdownerPosition[i * 3 + 1], meltdownerPosition[i * 3 + 2]));
+        entity.dimension.spawnParticle(`karo:meltdowner_standby`, location.offsetDirct(meltdownerPosition[i * 3], meltdownerPosition[i * 3 + 1], meltdownerPosition[i * 3 + 2], direction));
     };
 };
 
@@ -35,8 +36,9 @@ export function MeltdownerStandby(entity) {
  */
 export function Meltdowner(entity, time) {
     let shouldStop = false;
-    const count = meltDownerCount.get(entity.id) ?? 0;
-    if(count === 10) return;
+    let count = meltDownerCount.get(entity.id) ?? 0;
+    meltDownerCount.set(entity.id, count + 1);
+    if (count === 10) return;
     try {
         if ((entity instanceof Player)) {
             entity.runCommand(`inputpermission set @s camera disabled`);
@@ -50,29 +52,28 @@ export function Meltdowner(entity, time) {
 
         for (let chargeTime = 0; chargeTime < time; chargeTime++) {
             system.runTimeout(() => {
+                entity.dimension.spawnParticle(`karo:meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2], direction));
                 entity.addTag(`meltdown_charge`);
                 if ((entity instanceof Player)) {
                     const selectedItem = entity.getComponent(`inventory`).container.getItem(entity.selectedSlotIndex);
-                    if(!selectedItem || selectedItem?.nameTag != `原子崩し`) {
+                    if (!selectedItem || selectedItem?.nameTag != `原子崩し`) {
                         entity.removeTag(`cancel_meltdown`);
                         entity.removeTag(`meltdown_charge`);
                         return;
-                    };                
+                    };
                 };
                 if (entity.addTag(`cancel_meltdown`)) {
                     entity.removeTag(`cancel_meltdown`);
                     entity.removeTag(`meltdown_charge`);
                     return;
                 };
-                entity.dimension.spawnParticle(`meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2]));
             }, chargeTime);
         };
         system.runTimeout(() => {
-            meltDownerCount.set(entity.id, count + 1);
             for (let i = 0; i < 13; i++) {
                 if (shouldStop) {
                     if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
-                        meltDownerCount.set(entity.id, count);
+                        meltDownerCount.set(entity.id, meltDownerCount.get(entity.id) - 1);
                         return;
                     } else {
                         shouldStop = false;
@@ -114,7 +115,7 @@ export function Meltdowner(entity, time) {
                             );
                         };
                     } catch (error) {
-                        meltDownerCount.set(entity.id, count);
+                        meltDownerCount.set(entity.id, meltDownerCount.get(entity.id) - 1);
                     };
                 }, Math.ceil(i / 5));
             };
