@@ -51,6 +51,14 @@ export function Meltdowner(entity, time) {
         for (let chargeTime = 0; chargeTime < time; chargeTime++) {
             system.runTimeout(() => {
                 entity.addTag(`meltdown_charge`);
+                if ((entity instanceof Player)) {
+                    const selectedItem = entity.getComponent(`inventory`).container.getItem(entity.selectedSlotIndex);
+                    if(!selectedItem || selectedItem?.nameTag != `原子崩し`) {
+                        entity.removeTag(`cancel_meltdown`);
+                        entity.removeTag(`meltdown_charge`);
+                        return;
+                    };                
+                };
                 if (entity.addTag(`cancel_meltdown`)) {
                     entity.removeTag(`cancel_meltdown`);
                     entity.removeTag(`meltdown_charge`);
