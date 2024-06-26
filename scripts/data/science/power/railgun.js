@@ -106,13 +106,24 @@ export function Railgun(entity, time) {
             const location = new Vec3(x, y, z);
             const direction = entity.getViewDirection();
             for (let i = 0; i < 13; i++) {
-                if (shouldStop) return;
-                if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction))?.isAir) return;
+                if (shouldStop) {
+                    if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction))?.isAir) {
+                        return;
+                    } else {
+                        shouldStop = false;
+                    };
+                };
                 system.runTimeout(() => {
                     try {
                         for (let i2 = 0; i2 < 17; i2++) {
+                            if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction))?.isAir) {
+                                try {
+                                    entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 1, { allowUnderwater: true, breaksBlocks: true });
+                                } catch (error) { }
+                                shouldStop = true;
+                            };
                             entity.dimension.spawnParticle(`karo:railgun_orbit`, location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction));
-                            entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), volume: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction) ,maxDistance: 0.1}).forEach(
+                            entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), volume: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), maxDistance: 0.5 }).forEach(
                                 mob => {
                                     if (mob.hasTag(`imagine_breaker`)) {
                                         shouldStop = true;

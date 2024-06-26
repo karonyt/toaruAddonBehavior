@@ -149,6 +149,42 @@
               }
             },
             "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "has_tag",
+                    "subject": "other",
+                    "operator": "==",
+                    "value": "imagine_breaker"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": true
           }
         ]
       },
