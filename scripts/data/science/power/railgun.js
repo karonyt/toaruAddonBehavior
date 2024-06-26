@@ -23,7 +23,7 @@ export function Lightning_straight(entity) {
                             if (mob.id !== entity.id) {
                                 if (mob.hasTag(`ippou_tuukou`)) {
                                     mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
-                                        p => p.playSound(`reflection`,{location: mob.location})
+                                        p => p.playSound(`reflection`, { location: mob.location })
                                     )
                                     Lightning_straight(mob);
                                     shouldStop = true;
@@ -65,7 +65,7 @@ export function Lightning_circle(entity) {
                     if (mob.id !== entity.id) {
                         if (mob.hasTag(`ippou_tuukou`)) {
                             mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
-                                p => p.playSound(`reflection`,{location: mob.location})
+                                p => p.playSound(`reflection`, { location: mob.location })
                             );
                             Lightning_straight(mob);
                             shouldStop = true;
@@ -110,33 +110,32 @@ export function Railgun(entity, time) {
                 if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction)).isAir) return;
                 system.runTimeout(() => {
                     try {
-                        for(let i2 = 0;i2 < 17;i2++) {
-                            entity.dimension.spawnParticle(`karo:railgun_orbit`,location.offsetDirct(0, 2, i * 4 + (i2 / 4), direction));
-                        };
-                        entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4, direction), maxDistance: 3 }).forEach(
-                            mob => {
-                                if (mob.hasTag(`imagine_breaker`)) {
-                                    shouldStop = true;
-                                    return;
-                                };
-                                if (mob.id !== entity.id) {
-                                    if (mob.hasTag(`ippou_tuukou`)) {
-                                        mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
-                                            p => p.playSound(``)
-                                        );
-                                        Railgun(mob, 0);
+                        for (let i2 = 0; i2 < 17; i2++) {
+                            entity.dimension.spawnParticle(`karo:railgun_orbit`, location.offsetDirct(0, 2, i * 4 + (i2 / 4), direction));
+                            entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4 + (i2 / 4), direction), maxDistance: 3 }).forEach(
+                                mob => {
+                                    if (mob.hasTag(`imagine_breaker`)) {
                                         shouldStop = true;
                                         return;
-                                    } else {
-                                        mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity });
                                     };
-                                };
-                            }
-                        );
+                                    if (mob.id !== entity.id) {
+                                        if (mob.hasTag(`ippou_tuukou`)) {
+                                            mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
+                                                p => p.playSound(``)
+                                            );
+                                            Railgun(mob, 0);
+                                            shouldStop = true;
+                                            return;
+                                        } else {
+                                            mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity });
+                                        };
+                                    };
+                                }
+                            );
+                        };
                         if (!shouldStop) {
                             entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 1, { allowUnderwater: true, breaksBlocks: false });
                         };
-
                     } catch (error) { };
                 }, Math.ceil(i / 5));
             };
