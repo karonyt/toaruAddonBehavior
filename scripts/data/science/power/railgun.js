@@ -1,4 +1,4 @@
-import { Entity, EntityDamageCause, Player, system } from "@minecraft/server";
+import { BlockVolume, Entity, EntityDamageCause, Player, system } from "@minecraft/server";
 import { Vec3 } from "../../../lib/utils/vec3";
 
 /**
@@ -112,7 +112,7 @@ export function Railgun(entity, time) {
                     try {
                         for (let i2 = 0; i2 < 17; i2++) {
                             entity.dimension.spawnParticle(`karo:railgun_orbit`, location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction));
-                            entity.dimension.getEntities({ location: location.offsetDirct(0, 2, i * 4 + (i2 / 4), direction), maxDistance: 2 }).forEach(
+                            entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), volume: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction) }).forEach(
                                 mob => {
                                     if (mob.hasTag(`imagine_breaker`)) {
                                         shouldStop = true;
@@ -121,7 +121,8 @@ export function Railgun(entity, time) {
                                     if (mob.id !== entity.id) {
                                         if (mob.hasTag(`ippou_tuukou`)) {
                                             mob.dimension.getPlayers({
-                                                location: mob.location, maxDistance: 30 }).forEach(
+                                                location: mob.location, maxDistance: 30
+                                            }).forEach(
                                                 p => {
                                                     p.playSound(`reflection`, { location: p.location });
                                                     return;
