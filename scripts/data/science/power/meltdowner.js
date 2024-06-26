@@ -20,11 +20,11 @@ const meltdownerPosition = [
  * @param {Entity} entity 
  */
 export function MeltdownerStandby(entity) {
-    let count = meltDownerCount.get(entity.id) ?? 0;
+    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id,0).get(entity.id);
     const { x, y, z } = entity.location;
     const location = new Vec3(x, y, z);
     const direction = entity.getViewDirection();
-    for (let i = count; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         if (i === 10) return;
         entity.dimension.spawnParticle(`karo:meltdowner_standby`, location.offsetDirct(meltdownerPosition[i * 3], meltdownerPosition[i * 3 + 1], meltdownerPosition[i * 3 + 2], direction));
     };
@@ -36,7 +36,7 @@ export function MeltdownerStandby(entity) {
  */
 export function Meltdowner(entity, time) {
     let shouldStop = false;
-    let count = meltDownerCount.get(entity.id) ?? 0;
+    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id,0).get(entity.id);
     meltDownerCount.set(entity.id, count + 1);
     if (count === 10) return;
     try {
