@@ -122,7 +122,7 @@ export function Railgun(entity, time) {
                                         if (mob.hasTag(`ippou_tuukou`)) {
                                             mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
                                                 p => {
-                                                    p.playSound(`reflection`, { location: entity.location });
+                                                    p.playSound(`reflection`, { location: p.location });
                                                     return;
                                                 });
                                             Railgun(mob, 0);
