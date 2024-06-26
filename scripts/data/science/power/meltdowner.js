@@ -38,7 +38,7 @@ export function Meltdowner(entity, time) {
     let shouldStop = false;
     let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id,0).get(entity.id);
     meltDownerCount.set(entity.id, count + 1);
-    if (count === 10) return;
+    if (count === 9) return;
     try {
         if ((entity instanceof Player)) {
             entity.runCommand(`inputpermission set @s movement disabled`);
