@@ -120,6 +120,7 @@ export function Railgun(entity, time) {
                                     };
                                     if (mob.id !== entity.id) {
                                         if (mob.hasTag(`ippou_tuukou`)) {
+                                            if(entity instanceof Player) entity.playSound(`reflection`, { location: mob.location });
                                             mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
                                                 p => {
                                                     p.playSound(`reflection`, { location: mob.location });
