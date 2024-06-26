@@ -118,7 +118,7 @@ export function Railgun(entity, time) {
                         for (let i2 = 0; i2 < 17; i2++) {
                             if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction))?.isAir) {
                                 try {
-                                    entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 1, { allowUnderwater: true, breaksBlocks: true });
+                                    entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 2, { allowUnderwater: true, breaksBlocks: true });
                                 } catch (error) { }
                                 shouldStop = true;
                             };
@@ -149,7 +149,7 @@ export function Railgun(entity, time) {
                             );
                         };
                         if (!shouldStop && 2 < i) {
-                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 1, { allowUnderwater: true, breaksBlocks: false });
+                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 0.01, { allowUnderwater: true, breaksBlocks: true });
                         };
                     } catch (error) { };
                 }, Math.ceil(i / 5));

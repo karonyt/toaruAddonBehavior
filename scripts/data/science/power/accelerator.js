@@ -76,10 +76,10 @@ export function teleport(source, entity, location, title) {
 world.afterEvents.entityHitEntity.subscribe((ev) => {
     const { hitEntity, damagingEntity } = ev;
     if (!hitEntity.hasTag(`ippou_tuukou`)) return;
-    hitEntity.dimension.playSound(`reflection`, { location: hitEntity.location });
+    hitEntity.dimension.playSound(`reflection`, hitEntity.location);
     if(damagingEntity.hasTag(`imagine_breaker`)) return;
     if (damagingEntity instanceof Player) {
-        const mainHandId = damagingEntity.getComponent('inventory').container.getItem(damagingEntity.selectedSlot)?.typeId;
+        const mainHandId = damagingEntity.getComponent('inventory').container.getItem(damagingEntity.selectedSlotIndex)?.typeId;
         let reflectionDamage = 1;
         if (mainHandId in weaponDamage) {
             reflectionDamage = weaponDamage[mainHandId];

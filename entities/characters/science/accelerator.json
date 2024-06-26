@@ -155,6 +155,33 @@
               "filters": {
                 "all_of": [
                   {
+                    "test": "was_last_hurt_by",
+                    "subject": "damager",
+                    "operator": "==",
+                    "value": "true"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "was_last_hurt_by",
+                    "subject": "block",
+                    "operator": "==",
+                    "value": "true"
+                  },
+                  {
                     "test": "has_tag",
                     "subject": "self",
                     "operator": "==",
@@ -174,6 +201,27 @@
                     "subject": "other",
                     "operator": "==",
                     "value": "imagine_breaker"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "!=",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": true
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "was_last_hurt_by",
+                    "subject": "other",
+                    "operator": "==",
+                    "value": "true"
                   },
                   {
                     "test": "has_tag",
