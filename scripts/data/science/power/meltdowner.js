@@ -112,7 +112,7 @@ export function Meltdowner(entity, time) {
             if ((entity instanceof Player)) {
                 entity.runCommand(`inputpermission set @s camera enabled`);
                 entity.runCommand(`inputpermission set @s movement enabled`);
-            }
+            };
         }, time + 20);
     } catch (error) { };
 };
