@@ -105,7 +105,7 @@ export function Railgun(entity, time) {
             const { x, y, z } = entity.location;
             const location = new Vec3(x, y, z);
             const direction = entity.getViewDirection();
-            for (let i = 2; i < 13; i++) {
+            for (let i = 0; i < 13; i++) {
                 if (shouldStop) return;
                 if (!entity.dimension.getBlock(location.offsetDirct(0, 2, i * 4, direction)).isAir) return;
                 system.runTimeout(() => {
@@ -133,7 +133,7 @@ export function Railgun(entity, time) {
                                 }
                             );
                         };
-                        if (!shouldStop) {
+                        if (!shouldStop && 2 < i) {
                             entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 1, { allowUnderwater: true, breaksBlocks: false });
                         };
                     } catch (error) { };
