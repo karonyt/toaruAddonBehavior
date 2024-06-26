@@ -20,7 +20,7 @@ const meltdownerPosition = [
  * @param {Entity} entity 
  */
 export function MeltdownerStandby(entity) {
-    const count = meltDownerCount.get(entity.id) ?? 0;
+    let count = meltDownerCount.get(entity.id) ?? 0;
     const { x, y, z } = entity.location;
     const location = new Vec3(x, y, z);
     const direction = entity.getViewDirection();
