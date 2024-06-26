@@ -73,7 +73,8 @@ export function Meltdowner(entity, time) {
             for (let i = 0; i < 13; i++) {
                 if (shouldStop) {
                     if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
-                        meltDownerCount.set(entity.id, meltDownerCount.get(entity.id) - 1);
+                        let value = meltDownerCount.get(entity.id) ?? 1;
+                        meltDownerCount.set(entity.id, value - 1);
                         return;
                     } else {
                         shouldStop = false;
@@ -115,7 +116,8 @@ export function Meltdowner(entity, time) {
                             );
                         };
                     } catch (error) {
-                        meltDownerCount.set(entity.id, meltDownerCount.get(entity.id) - 1);
+                        let value = meltDownerCount.get(entity.id) ?? 1;
+                        meltDownerCount.set(entity.id, value - 1);
                     };
                 }, Math.ceil(i / 5));
             };
