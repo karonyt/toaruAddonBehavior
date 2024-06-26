@@ -155,10 +155,10 @@
               "filters": {
                 "all_of": [
                   {
-                    "test": "was_last_hurt_by",
-                    "subject": "damager",
+                    "test": "has_damage",
+                    "subject": "self",
                     "operator": "==",
-                    "value": "true"
+                    "value": "anvil"
                   },
                   {
                     "test": "has_tag",
@@ -176,10 +176,10 @@
               "filters": {
                 "all_of": [
                   {
-                    "test": "was_last_hurt_by",
-                    "subject": "block",
+                    "test": "has_damage",
+                    "subject": "self",
                     "operator": "==",
-                    "value": "true"
+                    "value": "fall"
                   },
                   {
                     "test": "has_tag",
@@ -195,44 +195,422 @@
           {
             "on_damage": {
               "filters": {
-                "any_of": [
+                "all_of": [
                   {
-                    "test": "has_tag",
-                    "subject": "other",
+                    "test": "has_damage",
+                    "subject": "self",
                     "operator": "==",
-                    "value": "imagine_breaker"
+                    "value": "block_explosion"
                   },
                   {
                     "test": "has_tag",
                     "subject": "self",
-                    "operator": "!=",
+                    "operator": "==",
                     "value": "ippou_tuukou"
                   }
                 ]
               }
             },
-            "deals_damage": true
+            "deals_damage": false
           },
           {
             "on_damage": {
               "filters": {
-                "any_of": [
+                "all_of": [
                   {
-                    "test": "was_last_hurt_by",
-                    "subject": "other",
+                    "test": "has_damage",
+                    "subject": "self",
                     "operator": "==",
-                    "value": "true"
+                    "value": "contact"
                   },
                   {
                     "test": "has_tag",
                     "subject": "self",
-                    "operator": "!=",
+                    "operator": "==",
                     "value": "ippou_tuukou"
                   }
                 ]
               }
             },
-            "deals_damage": true
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "drowning"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "entity_explosion"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "fall"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "falling_block"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "fire"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "fire_tick"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "fly_into_wall"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "lava"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "magic"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "override"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "piston"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "projectile"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "sonic_boom"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "stalactite"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "stalagmite"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "suffocation"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "thorns"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
+          },
+          {
+            "on_damage": {
+              "filters": {
+                "all_of": [
+                  {
+                    "test": "has_damage",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "wither"
+                  },
+                  {
+                    "test": "has_tag",
+                    "subject": "self",
+                    "operator": "==",
+                    "value": "ippou_tuukou"
+                  }
+                ]
+              }
+            },
+            "deals_damage": false
           }
         ]
       },
