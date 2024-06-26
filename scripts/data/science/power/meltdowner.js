@@ -50,6 +50,7 @@ export function Meltdowner(entity, time) {
 
         for (let chargeTime = 0; chargeTime < time; chargeTime++) {
             system.runTimeout(() => {
+                entity.addTag(`meltdown_charge`);
                 if (entity.addTag(`cancel_meltdown`)) {
                     entity.removeTag(`cancel_meltdown`);
                     return;
@@ -111,6 +112,7 @@ export function Meltdowner(entity, time) {
         }, time);
         system.runTimeout(() => {
             if ((entity instanceof Player)) {
+                entity.removeTag(`meltdown_charge`);
                 entity.runCommand(`inputpermission set @s camera enabled`);
                 entity.runCommand(`inputpermission set @s movement enabled`);
             };
