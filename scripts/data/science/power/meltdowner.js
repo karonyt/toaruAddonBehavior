@@ -132,5 +132,9 @@ export function Meltdowner(entity, time) {
                 entity.runCommand(`inputpermission set @s movement enabled`);
             };
         }, time + 20);
-    } catch (error) { };
+    } catch (error) { 
+        let value = meltDownerCount.get(entity.id) ?? 1;
+        if (value === 0) return;
+        meltDownerCount.set(entity.id, value - 1);
+    };
 };
