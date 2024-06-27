@@ -140,11 +140,10 @@ export function Railgun(entity, time) {
                                             system.runTimeout(() => {
                                                 mob.dimension.getPlayers({
                                                     location: mob.location, maxDistance: 30
-                                                }).forEach(
-                                                    p => {
-                                                        p.playSound(`reflection`, { location: p.location });
-                                                        return;
-                                                    });
+                                                }).forEach(p => {
+                                                    p.playSound(`reflection`, { location: p.location });
+                                                    return;
+                                                });
                                                 Railgun(mob, 0);
                                             }, 20);
                                             return;
