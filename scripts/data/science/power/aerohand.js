@@ -15,12 +15,12 @@ export function Knockback_straight(entity) {
             if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 2, direction)).isAir) return;
             system.runTimeout(() => {
                 if (shouldStop) return;
-                const entities = entity.dimension.getEntities({ location: location.offsetDirct(0, 1, i * 2, direction), maxDistance: 3 })
+                const entities = entity.dimension.getEntities({ location: location.offsetDirct(0, 1, i * 2, direction), maxDistance: 3 });
                 for (const mob of entities) {
                     if (mob.hasTag(`imagine_breaker`)) {
                         shouldStop = true;
                         return;
-                    }
+                    };
                     if (mob.id !== entity.id) {
                         if (mob.hasTag(`ippou_tuukou`)) {
                             mob.dimension.getPlayers({location: mob.location,maxDistance: 30}).forEach(
@@ -31,12 +31,12 @@ export function Knockback_straight(entity) {
                             return;
                         } else {
                             try {
-                                mob.applyKnockback(direction.x, direction.z, 4, 0.5)
+                                mob.applyKnockback(direction.x, direction.z, 4, 0.5);
                             } catch (error) {
-                                mob.applyImpulse(location.offsetDirct(0, 0.5, i * 5, direction).offset(-location.x, -location.y, -location.z))
-                            }
-                        }
-                    }
+                                mob.applyImpulse(location.offsetDirct(0, 0.5, i * 5, direction).offset(-location.x, -location.y, -location.z));
+                            };
+                        };
+                    };
                 };
                 if (!shouldStop) entity.dimension.spawnParticle(`minecraft:dragon_destroy_block`, location.offsetDirct(0, 1, i * 3, direction));
             }, i);

@@ -100,7 +100,7 @@ export function Railgun(entity, time) {
         if ((entity instanceof Player)) {
             entity.runCommand(`inputpermission set @s camera disabled`);
             entity.runCommand(`inputpermission set @s movement disabled`);
-        }
+        };
         system.runTimeout(() => {
             const { x, y, z } = entity.location;
             const location = new Vec3(x, y, z);
@@ -119,7 +119,7 @@ export function Railgun(entity, time) {
                             if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction))?.isAir) {
                                 try {
                                     entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 2, { allowUnderwater: true, breaksBlocks: true });
-                                } catch (error) { }
+                                } catch (error) { };
                                 shouldStop = true;
                             };
                             entity.dimension.spawnParticle(`karo:railgun_orbit`, location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction));
@@ -163,7 +163,7 @@ export function Railgun(entity, time) {
             if ((entity instanceof Player)) {
                 entity.runCommand(`inputpermission set @s camera enabled`);
                 entity.runCommand(`inputpermission set @s movement enabled`);
-            }
+            };
         }, time + 20);
     } catch (error) { };
 };

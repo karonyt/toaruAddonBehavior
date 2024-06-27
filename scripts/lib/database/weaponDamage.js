@@ -35,4 +35,4 @@ export default {
     "minecraft:golden_shovel": 1,
     "minecraft:diamond_shovel": 4,
     "minecraft:netherite_shovel": 5,
-}
+};

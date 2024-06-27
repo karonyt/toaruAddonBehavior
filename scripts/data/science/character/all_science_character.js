@@ -1,1 +1,1 @@
-import "./accelerator"
+import "./accelerator";
