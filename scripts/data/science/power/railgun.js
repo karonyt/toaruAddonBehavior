@@ -113,6 +113,9 @@ export function Railgun(entity, time) {
                         shouldStop = false;
                     };
                 };
+                try {
+                    entity.dimension.spawnParticle(`karo:big_electronics_particle`, location.offsetDirct(0, 1, i * 4, direction));
+                } catch (error) { }
                 system.runTimeout(() => {
                     try {
                         for (let i2 = 0; i2 < 17; i2++) {
@@ -143,7 +146,7 @@ export function Railgun(entity, time) {
                                                         return;
                                                     });
                                                 Railgun(mob, 0);
-                                            },20);
+                                            }, 20);
                                             return;
                                         } else {
                                             mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity });
@@ -152,8 +155,8 @@ export function Railgun(entity, time) {
                                 }
                             );
                         };
-                        if (!shouldStop && 2 < i) {
-                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 0.01, { allowUnderwater: true, breaksBlocks: true });
+                        if (!shouldStop) {
+                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 0.1, { allowUnderwater: true, breaksBlocks: true });
                         };
                     } catch (error) { };
                 }, Math.ceil(i / 5));
