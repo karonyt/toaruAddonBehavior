@@ -36,6 +36,7 @@ export function MeltdownerStandby(entity) {
  */
 export function Meltdowner(entity, time) {
     let shouldStop = false;
+    let stop = false;
     let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id, 0).get(entity.id);
     meltDownerCount.set(entity.id, count + 1);
     if (count === 9) return;
@@ -55,7 +56,7 @@ export function Meltdowner(entity, time) {
                 entity.addTag(`meltdown_charge`);
                 if ((entity instanceof Player)) {
                     if (chargeTime === time - 10) {
-                        entity.dimension.playSound(`meltdowner.shot`, entity.location )
+                        entity.dimension.playSound(`meltdowner.shot`, entity.location)
                     };
                     const selectedItem = entity.getComponent(`inventory`).container.getItem(entity.selectedSlotIndex);
                     if (!selectedItem || selectedItem?.nameTag != `原子崩し`) {
@@ -73,6 +74,7 @@ export function Meltdowner(entity, time) {
         };
         system.runTimeout(() => {
             for (let i = 0; i < 13; i++) {
+                if (stop) return;
                 if (shouldStop) {
                     if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
                         let value = meltDownerCount.get(entity.id) ?? 1;
@@ -96,20 +98,21 @@ export function Meltdowner(entity, time) {
                             entity.dimension.getEntities({ location: location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction), maxDistance: 0.5 }).forEach(
                                 mob => {
                                     if (mob.hasTag(`imagine_breaker`)) {
-                                        shouldStop = true;
+                                        stop = true;
                                         return;
                                     };
                                     if (mob.id !== entity.id) {
                                         if (mob.hasTag(`ippou_tuukou`)) {
-                                            mob.dimension.getPlayers({
-                                                location: mob.location, maxDistance: 30
-                                            }).forEach(
-                                                p => {
+                                            system.runTimeout(() => { 
+                                                mob.dimension.getPlayers({
+                                                    location: mob.location, maxDistance: 30
+                                                }).forEach(p => {
                                                     p.playSound(`reflection`, { location: p.location });
                                                     return;
                                                 });
-                                            Meltdowner(mob, 0);
-                                            shouldStop = true;
+                                                Meltdowner(mob, 0);
+                                            },20);
+                                            stop = true;
                                             return;
                                         } else {
                                             mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity });
@@ -132,7 +135,7 @@ export function Meltdowner(entity, time) {
                 entity.runCommand(`inputpermission set @s movement enabled`);
             };
         }, time + 20);
-    } catch (error) { 
+    } catch (error) {
         let value = meltDownerCount.get(entity.id) ?? 1;
         if (value === 0) return;
         meltDownerCount.set(entity.id, value - 1);

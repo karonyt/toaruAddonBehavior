@@ -131,15 +131,19 @@ export function Railgun(entity, time) {
                                     };
                                     if (mob.id !== entity.id) {
                                         if (mob.hasTag(`ippou_tuukou`)) {
-                                            mob.dimension.getPlayers({
-                                                location: mob.location, maxDistance: 30
-                                            }).forEach(
-                                                p => {
-                                                    p.playSound(`reflection`, { location: p.location });
-                                                    return;
-                                                });
-                                            Railgun(mob, 0);
+                                            i = 13;
+                                            i2 = 17;
                                             shouldStop = true;
+                                            system.runTimeout(() => {
+                                                mob.dimension.getPlayers({
+                                                    location: mob.location, maxDistance: 30
+                                                }).forEach(
+                                                    p => {
+                                                        p.playSound(`reflection`, { location: p.location });
+                                                        return;
+                                                    });
+                                                Railgun(mob, 0);
+                                            },20);
                                             return;
                                         } else {
                                             mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity });
