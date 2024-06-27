@@ -94,6 +94,7 @@ export function Meltdowner(entity, time) {
                                 } catch (error) { }
                                 shouldStop = true;
                             };
+                            entity.dimension.spawnParticle(`karo:meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2], direction));
                             entity.dimension.spawnParticle(`karo:meltdowner_orbit`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction));
                             entity.dimension.getEntities({ location: location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction), maxDistance: 0.5 }).forEach(
                                 mob => {
@@ -103,7 +104,7 @@ export function Meltdowner(entity, time) {
                                     };
                                     if (mob.id !== entity.id) {
                                         if (mob.hasTag(`ippou_tuukou`)) {
-                                            system.runTimeout(() => { 
+                                            system.runTimeout(() => {
                                                 mob.dimension.getPlayers({
                                                     location: mob.location, maxDistance: 30
                                                 }).forEach(p => {
@@ -111,7 +112,7 @@ export function Meltdowner(entity, time) {
                                                     return;
                                                 });
                                                 Meltdowner(mob, 0);
-                                            },20);
+                                            }, 20);
                                             stop = true;
                                             return;
                                         } else {
