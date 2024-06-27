@@ -20,7 +20,7 @@ const meltdownerPosition = [
  * @param {Entity} entity 
  */
 export function MeltdownerStandby(entity) {
-    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id,0).get(entity.id);
+    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id, 0).get(entity.id);
     const { x, y, z } = entity.location;
     const location = new Vec3(x, y, z);
     const direction = entity.getViewDirection();
@@ -36,7 +36,7 @@ export function MeltdownerStandby(entity) {
  */
 export function Meltdowner(entity, time) {
     let shouldStop = false;
-    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id,0).get(entity.id);
+    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id, 0).get(entity.id);
     meltDownerCount.set(entity.id, count + 1);
     if (count === 9) return;
     try {
@@ -54,6 +54,9 @@ export function Meltdowner(entity, time) {
                 entity.dimension.spawnParticle(`karo:meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2], direction));
                 entity.addTag(`meltdown_charge`);
                 if ((entity instanceof Player)) {
+                    if (chargeTime === time - 10) {
+                        entity.dimension.playSound(`meltdowner.shot`, { location: entity.location })
+                    };
                     const selectedItem = entity.getComponent(`inventory`).container.getItem(entity.selectedSlotIndex);
                     if (!selectedItem || selectedItem?.nameTag != `原子崩し`) {
                         entity.removeTag(`cancel_meltdown`);
@@ -73,7 +76,7 @@ export function Meltdowner(entity, time) {
                 if (shouldStop) {
                     if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
                         let value = meltDownerCount.get(entity.id) ?? 1;
-                        if(value === 0) return;
+                        if (value === 0) return;
                         meltDownerCount.set(entity.id, value - 1);
                         return;
                     } else {
@@ -117,7 +120,7 @@ export function Meltdowner(entity, time) {
                         };
                     } catch (error) {
                         let value = meltDownerCount.get(entity.id) ?? 1;
-                        if(value === 0) return;
+                        if (value === 0) return;
                         meltDownerCount.set(entity.id, value - 1);
                     };
                 }, Math.ceil(i / 5));
