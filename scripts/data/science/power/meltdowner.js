@@ -55,7 +55,7 @@ export function Meltdowner(entity, time) {
                 entity.addTag(`meltdown_charge`);
                 if ((entity instanceof Player)) {
                     if (chargeTime === time - 10) {
-                        entity.dimension.playSound(`meltdowner.shot`, { location: entity.location })
+                        entity.dimension.playSound(`meltdowner.shot`, entity.location )
                     };
                     const selectedItem = entity.getComponent(`inventory`).container.getItem(entity.selectedSlotIndex);
                     if (!selectedItem || selectedItem?.nameTag != `原子崩し`) {
@@ -108,7 +108,7 @@ export function Meltdowner(entity, time) {
                                                     p.playSound(`reflection`, { location: p.location });
                                                     return;
                                                 });
-                                            Railgun(mob, 0);
+                                            Meltdowner(mob, 0);
                                             shouldStop = true;
                                             return;
                                         } else {
