@@ -1,8 +1,9 @@
-import { system, world } from "@minecraft/server";
+import { Player, system, world } from "@minecraft/server";
 import { Lightning_circle, Lightning_straight, Railgun } from "./data/science/power/railgun";
 import "./data/science/science";
 import { Knockback_straight } from "./data/science/power/aerohand";
 import { Meltdowner, MeltdownerStandby } from "./data/science/power/meltdowner";
+import { ModalFormData } from "@minecraft/server-ui";
 
 world.afterEvents.itemUse.subscribe((ev) => {
      if (!ev.itemStack.nameTag) return
@@ -27,6 +28,10 @@ world.afterEvents.itemUse.subscribe((ev) => {
                Meltdowner(ev.source, 20);
                break;
           };
+          case `棒`: {
+               testForm(ev.source);
+               break;
+          };
      };
 });
 
@@ -42,3 +47,13 @@ system.runInterval(() => {
           };
      });
 });
+
+/**
+ * 
+ * @param {Player} player 
+ */
+function testForm(player) {
+     const form = new ModalFormData();
+     form.textField(`testLabel`,`PleaseInputValue`,`DefaultValue`);
+     form.show(player);
+};
