@@ -54,6 +54,7 @@ system.runInterval(() => {
  */
 function testForm(player) {
      const form = new ModalFormData();
+     form.title(`§t§e§s§t`)
      form.textField(`testLabel`,`PleaseInputValue`,`DefaultValue`);
      form.show(player);
 };
