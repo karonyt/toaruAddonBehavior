@@ -92,12 +92,13 @@
         "priority": 3
       },
       "minecraft:behavior.look_at_player": {
-        "priority": 8,
-        "look_distance": 6,
+        "priority": 9,
+        "look_distance": 10,
         "probability": 0.02
       },
-      "minecraft:behavior.random_look_around": {
-        "priority": 9
+      "minecraft:behavior.random_look_around":{
+        "priority":7,
+        "speed_multiplier":1
       },
       "minecraft:behavior.hurt_by_target": {
         "priority": 1
