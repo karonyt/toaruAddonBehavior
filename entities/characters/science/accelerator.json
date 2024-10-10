@@ -7,7 +7,27 @@
       "is_summonable": true,
       "is_experimental": false
     },
-    "component_groups": {},
+    "component_groups": {
+      "fly_attack": {
+        "minecraft:navigation.float": {
+          "can_path_over_water": true
+        },
+        "minecraft:behavior.float_wander": {
+          "priority": 2,
+          "must_reach": true
+        },
+        "minecraft:can_fly": {
+        },
+        "minecraft:movement": {
+          "value": 0.05
+        }  
+      },
+      "high_speed": {
+        "minecraft:movement": {
+          "value": 1
+        }
+      }
+    },
     "components": {
       "minecraft:is_hidden_when_invisible": {},
       "minecraft:breathable": {
@@ -25,7 +45,8 @@
           "human",
           "science",
           "student",
-          "level5"
+          "level5",
+          "villager"
         ]
       },
       "minecraft:loot": {
@@ -63,18 +84,18 @@
         "damage": 4
       },
       "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:movement.basic": {
+      },
       "minecraft:navigation.walk": {
         "is_amphibious": true,
         "can_pass_doors": true,
-        "can_break_doors": true,
-        "avoid_portals": false
+        "can_walk": true,
+        "can_break_doors": true
       },
-      "minecraft:movement.basic": {},
-      "minecraft:movement": {
-        "value": 0.3
+      "minecraft:jump.static": {
       },
-      "minecraft:jump.static": {},
-      "minecraft:can_climb": {},
+      "minecraft:can_climb": {
+      },
       "minecraft:environment_sensor": {
         "triggers": [
           {
@@ -88,20 +109,17 @@
           }
         ]
       },
-      "minecraft:behavior.melee_attack": {
-        "priority": 3
+      "minecraft:behavior.random_stroll": {
+        "priority": 7,
+        "speed_multiplier": 1
       },
       "minecraft:behavior.look_at_player": {
-        "priority": 9,
-        "look_distance": 10,
+        "priority": 8,
+        "look_distance": 6,
         "probability": 0.02
       },
-      "minecraft:behavior.random_look_around":{
-        "priority":7,
-        "speed_multiplier":1
-      },
-      "minecraft:behavior.hurt_by_target": {
-        "priority": 1
+      "minecraft:behavior.random_look_around": {
+        "priority": 9
       },
       "minecraft:behavior.nearest_attackable_target": {
         "priority": 2,

@@ -3,7 +3,7 @@
  * 反射(攻撃の無効化部分)はエンティティjsonで行うものとする
  */
 
-import { world, system, Player, Entity, EntityDamageCause } from "@minecraft/server";
+import { world, system, Player, Entity, EntityDamageCause, GameMode } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import weaponDamage from "../../../lib/database/weaponDamage";
 import { Vec3 } from "../../../lib/utils/vec3";
@@ -77,16 +77,20 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
     const { hitEntity, damagingEntity } = ev;
     if (!hitEntity.hasTag(`ippou_tuukou`)) return;
     hitEntity.dimension.playSound(`reflection`, hitEntity.location);
-    if(damagingEntity.hasTag(`imagine_breaker`)) return;
-    if (damagingEntity instanceof Player) {
-        const mainHandId = damagingEntity.getComponent('inventory').container.getItem(damagingEntity.selectedSlotIndex)?.typeId;
-        let reflectionDamage = 1;
-        if (mainHandId in weaponDamage) {
-            reflectionDamage = weaponDamage[mainHandId];
+    if (damagingEntity.hasTag(`imagine_breaker`)) return;
+    //敵地処理(上手くいかない)
+    /*if (!(hitEntity instanceof Player)) {
+        if(damagingEntity instanceof Player && !(damagingEntity.getGameMode() === GameMode.creative || damagingEntity.getGameMode() === GameMode.spectator)) {
+            hitEntity.target = damagingEntity;
         };
-        const { x: rx, z: rz } = hitEntity.getViewDirection();
-        damagingEntity.applyKnockback(rx,rz,5,0.2);
-        damagingEntity.applyDamage(reflectionDamage,{damagingEntity: hitEntity,cause: EntityDamageCause.entityAttack});
-        return;
+    };*/
+    let mainHandId = "undefined";
+    if (damagingEntity instanceof Player) {
+        mainHandId = damagingEntity.getComponent('inventory').container.getItem(damagingEntity.selectedSlotIndex)?.typeId ?? "undefined";
     };
+    let reflectionDamage = weaponDamage[mainHandId] ?? 1;
+    const { x: rx, z: rz } = hitEntity.getViewDirection();
+    damagingEntity.applyKnockback(rx, rz, 5, 0.2);
+    damagingEntity.applyDamage(reflectionDamage, { damagingEntity: hitEntity, cause: EntityDamageCause.entityAttack });
+    return;
 });
