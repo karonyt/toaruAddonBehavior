@@ -16,16 +16,15 @@
           "priority": 2,
           "must_reach": true
         },
-        "minecraft:can_fly": {
-        },
+        "minecraft:can_fly": {},
         "minecraft:movement": {
           "value": 0.05
         },
         "minecraft:navigation.walk": {
-          "is_amphibious": true,
-          "can_pass_doors": true,
+          "is_amphibious": false,
+          "can_pass_doors": false,
           "can_walk": false,
-          "can_break_doors": true
+          "can_break_doors": false
         }
       },
       "high_speed": {
@@ -90,18 +89,15 @@
         "damage": 4
       },
       "minecraft:conditional_bandwidth_optimization": {},
-      "minecraft:movement.basic": {
-      },
+      "minecraft:movement.basic": {},
       "minecraft:navigation.walk": {
         "is_amphibious": true,
         "can_pass_doors": true,
         "can_walk": true,
         "can_break_doors": true
       },
-      "minecraft:jump.static": {
-      },
-      "minecraft:can_climb": {
-      },
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {},
       "minecraft:environment_sensor": {
         "triggers": [
           {
