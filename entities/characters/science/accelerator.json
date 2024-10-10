@@ -638,6 +638,35 @@
         "hud_range": 10
       }
     },
-    "events": {}
+    "events": {
+      "accelerator_start_fly": {
+        "add": {
+          "component_groups": [
+            "fly_attack"
+          ]
+        }
+      },
+      "accelerator_stop_fly": {
+        "remove": {
+          "component_groups": [
+            "fly_attack"
+          ]
+        }
+      },
+      "accelerator_start_high_speed": {
+        "add": {
+          "component_groups": [
+            "fly_attack"
+          ]
+        }
+      },
+      "accelerator_stop_high_speed": {
+        "remove": {
+          "component_groups": [
+            "fly_attack"
+          ]
+        }
+      }
+    }
   }
 }
