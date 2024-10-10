@@ -20,7 +20,13 @@
         },
         "minecraft:movement": {
           "value": 0.05
-        }  
+        },
+        "minecraft:navigation.walk": {
+          "is_amphibious": true,
+          "can_pass_doors": true,
+          "can_walk": false,
+          "can_break_doors": true
+        }
       },
       "high_speed": {
         "minecraft:movement": {
@@ -656,14 +662,14 @@
       "accelerator_start_high_speed": {
         "add": {
           "component_groups": [
-            "fly_attack"
+            "high_speed"
           ]
         }
       },
       "accelerator_stop_high_speed": {
         "remove": {
           "component_groups": [
-            "fly_attack"
+            "high_speed"
           ]
         }
       }
