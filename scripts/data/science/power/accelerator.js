@@ -94,3 +94,19 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
     damagingEntity.applyDamage(reflectionDamage, { damagingEntity: hitEntity, cause: EntityDamageCause.entityAttack });
     return;
 });
+
+world.afterEvents.projectileHitEntity.subscribe((ev) => {
+    const { source, projectile, entity, hitVector, dimension } = ev;
+    const hitEntity = ev.getEntityHit()?.entity;
+    if (!hitEntity || !hitEntity.isValid()) return;
+    if (!hitEntity.hasTag(`ippou_tuukou`)) return;
+    hitEntity.dimension.playSound(`reflection`, hitEntity.location);
+    const rot = projectile.getRotation();
+    projectile.setRotation({ x: rot.y, y: rot.x });
+    const speed = projectile.getVelocity();
+    const newVelocity = { x: speed.x * -1, y: speed.y * -1, z: speed.z * -1 }
+    projectile.clearVelocity();
+    //projectile.tryTeleport(projectile.getViewDirection())
+    projectile.applyImpulse(newVelocity);
+    return;
+});
