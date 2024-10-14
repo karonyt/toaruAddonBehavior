@@ -96,7 +96,7 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
 });
 
 world.afterEvents.projectileHitEntity.subscribe((ev) => {
-    const { source, projectile, entity, hitVector, dimension } = ev;
+    const { source, projectile, hitVector, dimension } = ev;
     const hitEntity = ev.getEntityHit()?.entity;
     if (!hitEntity || !hitEntity.isValid()) return;
     if (!hitEntity.hasTag(`ippou_tuukou`)) return;
