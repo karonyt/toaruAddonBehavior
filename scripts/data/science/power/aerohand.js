@@ -23,15 +23,15 @@ export function Knockback_straight(entity) {
                     };
                     if (mob.id !== entity.id) {
                         if (mob.hasTag(`ippou_tuukou`)) {
-                            mob.dimension.getPlayers({location: mob.location,maxDistance: 30}).forEach(
-                                p => p.playSound(`reflection`,{location: mob.location})
+                            mob.dimension.getPlayers({ location: mob.location, maxDistance: 30 }).forEach(
+                                p => p.playSound(`reflection`, { location: mob.location })
                             );
                             Knockback_straight(mob);
                             shouldStop = true;
                             return;
                         } else {
                             try {
-                                mob.applyKnockback(direction.x, direction.z, 4, 0.5);
+                                mob.applyKnockback({ x: direction.x * 4, z: direction.z * 4 }, 0.5);
                             } catch (error) {
                                 mob.applyImpulse(location.offsetDirct(0, 0.5, i * 5, direction).offset(-location.x, -location.y, -location.z));
                             };

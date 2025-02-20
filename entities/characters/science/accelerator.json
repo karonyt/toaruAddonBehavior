@@ -18,7 +18,7 @@
         },
         "minecraft:can_fly": {},
         "minecraft:movement": {
-          "value": 0.05
+          "value": 0.02
         },
         "minecraft:navigation.walk": {
           "is_amphibious": false,
@@ -113,7 +113,7 @@
       },
       "minecraft:behavior.random_stroll": {
         "priority": 7,
-        "speed_multiplier": 1
+        "speed_multiplier": 0.2
       },
       "minecraft:behavior.look_at_player": {
         "priority": 8,

@@ -90,7 +90,7 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
     };
     let reflectionDamage = weaponDamage[mainHandId] ?? 1;
     const { x: rx, z: rz } = hitEntity.getViewDirection();
-    damagingEntity.applyKnockback(rx, rz, 5, 0.2);
+    damagingEntity.applyKnockback({ x: rx * 5, z: rz * 5 }, 0.2);
     damagingEntity.applyDamage(reflectionDamage, { damagingEntity: hitEntity, cause: EntityDamageCause.entityAttack });
     return;
 });
@@ -98,8 +98,9 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
 world.afterEvents.projectileHitEntity.subscribe((ev) => {
     const { source, projectile, hitVector, dimension } = ev;
     const hitEntity = ev.getEntityHit()?.entity;
-    if (!hitEntity || !hitEntity.isValid()) return;
+    if (!hitEntity) return;
     if (!hitEntity.hasTag(`ippou_tuukou`)) return;
+    if(projectile.hasTag('reflectioned')) return;
     hitEntity.dimension.playSound(`reflection`, hitEntity.location);
     const rot = projectile.getRotation();
     projectile.setRotation({ x: rot.y, y: rot.x });
@@ -108,5 +109,12 @@ world.afterEvents.projectileHitEntity.subscribe((ev) => {
     projectile.clearVelocity();
     //projectile.tryTeleport(projectile.getViewDirection())
     projectile.applyImpulse(newVelocity);
+    projectile.addTag('reflectioned');
+    system.runTimeout(() => {
+        try {
+            projectile.removeTag('reflectioned');
+        } catch (error) {
+        }
+    },5)
     return;
 });
