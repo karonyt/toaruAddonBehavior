@@ -1,5 +1,6 @@
 import { BlockVolume, Entity, EntityDamageCause, Player, system, world } from "@minecraft/server";
 import { Vec3 } from "../../../lib/utils/vec3";
+import { isBlockBreak } from "../../../lib/utils/util";
 
 const meltDownerCount = new Map();
 
@@ -92,7 +93,7 @@ export function Meltdowner(entity, time) {
                         for (let i2 = 0; i2 < 17; i2++) {
                             if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
                                 try {
-                                    entity.dimension.createExplosion(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction), 2, { allowUnderwater: true, breaksBlocks: true });
+                                    entity.dimension.createExplosion(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction), 2, { allowUnderwater: true, breaksBlocks: isBlockBreak() });
                                 } catch (error) { }
                                 meltdowner.addTag('shouldStop');
                             };

@@ -45,7 +45,7 @@ system.runInterval(() => {
  * エンティティをテレポートさせます
  * @param {Player|undefined} source 
  * @param {Entity} entity 
- * @param {Vector3|undefined} location 
+ * @param {{x: number, y: number, z: number}|undefined} location 
  * @param {string|undefined} title 
  */
 export function teleport(source, entity, location, title) {
@@ -100,7 +100,7 @@ world.afterEvents.projectileHitEntity.subscribe((ev) => {
     const hitEntity = ev.getEntityHit()?.entity;
     if (!hitEntity) return;
     if (!hitEntity.hasTag(`ippou_tuukou`)) return;
-    if(projectile.hasTag('reflectioned')) return;
+    if (projectile.hasTag('reflectioned')) return;
     hitEntity.dimension.playSound(`reflection`, hitEntity.location);
     const rot = projectile.getRotation();
     projectile.setRotation({ x: rot.y, y: rot.x });
@@ -115,6 +115,6 @@ world.afterEvents.projectileHitEntity.subscribe((ev) => {
             projectile.removeTag('reflectioned');
         } catch (error) {
         }
-    },5)
+    }, 5)
     return;
 });

@@ -1,15 +1,17 @@
 import { Player, system, world } from "@minecraft/server";
 import { Lightning_circle, Lightning_straight, Railgun } from "./data/science/power/railgun";
 import "./data/science/science";
-import { Knockback_straight } from "./data/science/power/aerohand";
+import { AerohandParameterForm, Knockback_straight } from "./data/science/power/aerohand";
 import { Meltdowner, MeltdownerStandby } from "./data/science/power/meltdowner";
 import { ModalFormData } from "@minecraft/server-ui";
+import "./system/system";
 
 world.afterEvents.itemUse.subscribe((ev) => {
-     if (!ev.itemStack) return
-     switch (ev.itemStack.typeId) {
+     const { source: player, itemStack } = ev;
+     if (!itemStack) return
+     switch (itemStack.typeId) {
           case `mc:railgun_power_item`: {
-               Railgun(ev.source, 40);
+               Railgun(player, 40);
                break;
           };
           case `円盤雷撃`: {
@@ -21,7 +23,7 @@ world.afterEvents.itemUse.subscribe((ev) => {
                break;
           };
           case `mc:aerohand_power_item`: {
-               Knockback_straight(ev.source);
+               player.isSneaking ? AerohandParameterForm(player) : Knockback_straight(ev.source);
                break;
           };
           case `mc:meltdowner_power_item`: {
@@ -55,6 +57,6 @@ system.runInterval(() => {
 function testForm(player) {
      const form = new ModalFormData();
      form.title(`§t§e§s§t`)
-     form.textField(`testLabel`,`PleaseInputValue`,{defaultValue: `DefaultValue`});
+     form.textField(`testLabel`, `PleaseInputValue`, { defaultValue: `DefaultValue` });
      form.show(player);
 };
