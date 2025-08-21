@@ -9,6 +9,9 @@
     },
     "component_groups": {},
     "components": {
+      "minecraft:scale": {
+        "value": 0.9
+      },
       "minecraft:is_hidden_when_invisible": {},
       "minecraft:breathable": {
         "total_supply": 15,

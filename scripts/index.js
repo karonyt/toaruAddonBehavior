@@ -6,9 +6,9 @@ import { Meltdowner, MeltdownerStandby } from "./data/science/power/meltdowner";
 import { ModalFormData } from "@minecraft/server-ui";
 
 world.afterEvents.itemUse.subscribe((ev) => {
-     if (!ev.itemStack.nameTag) return
-     switch (ev.itemStack.nameTag) {
-          case `超電磁砲`: {
+     if (!ev.itemStack) return
+     switch (ev.itemStack.typeId) {
+          case `mc:railgun_power_item`: {
                Railgun(ev.source, 40);
                break;
           };
@@ -20,15 +20,15 @@ world.afterEvents.itemUse.subscribe((ev) => {
                Lightning_straight(ev.source);
                break;
           };
-          case `正面風力`: {
+          case `mc:aerohand_power_item`: {
                Knockback_straight(ev.source);
                break;
           };
-          case `原子崩し`: {
+          case `mc:meltdowner_power_item`: {
                Meltdowner(ev.source, 20);
                break;
           };
-          case `棒`: {
+          case `minecraft:stick`: {
                testForm(ev.source);
                break;
           };
@@ -39,8 +39,8 @@ system.runInterval(() => {
      world.getAllPlayers().forEach(player => {
           const selectedItem = player.getComponent(`inventory`).container.getItem(player.selectedSlotIndex);
           if (!selectedItem) return;
-          switch (selectedItem.nameTag) {
-               case `原子崩し`: {
+          switch (selectedItem.typeId) {
+               case `mc:meltdowner_power_item`: {
                     MeltdownerStandby(player);
                     break;
                };
@@ -55,6 +55,6 @@ system.runInterval(() => {
 function testForm(player) {
      const form = new ModalFormData();
      form.title(`§t§e§s§t`)
-     form.textField(`testLabel`,`PleaseInputValue`,`DefaultValue`);
+     form.textField(`testLabel`,`PleaseInputValue`,{defaultValue: `DefaultValue`});
      form.show(player);
 };
