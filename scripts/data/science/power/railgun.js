@@ -127,37 +127,39 @@ export function Railgun(entity, time) {
                                 shouldStop = true;
                             };
                             entity.dimension.spawnParticle(`karo:railgun_orbit`, location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction));
-                            entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), volume: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), maxDistance: 0.5 }).forEach(
-                                mob => {
-                                    if (mob.hasTag(`imagine_breaker`)) {
+                            for (const mob of entity.dimension.getEntities({ location: location.offsetDirct(0, 0, i * 4 + (i2 / 4), direction), maxDistance: 3 })) {
+                                if (mob.hasTag(`imagine_breaker`)) {
+                                    shouldStop = true;
+                                    return;
+                                };
+                                if (mob.id !== entity.id) {
+                                    if (mob.hasTag(`ippou_tuukou`)) {
+                                        i = 13;
+                                        i2 = 17;
                                         shouldStop = true;
+                                        system.runTimeout(() => {
+                                            mob.dimension.getPlayers({
+                                                location: mob.location, maxDistance: 30
+                                            }).forEach(p => {
+                                                p.playSound(`reflection`, { location: p.location });
+                                                return;
+                                            });
+                                            Railgun(mob, 0);
+                                        }, 20);
                                         return;
-                                    };
-                                    if (mob.id !== entity.id) {
-                                        if (mob.hasTag(`ippou_tuukou`)) {
-                                            i = 13;
-                                            i2 = 17;
-                                            shouldStop = true;
-                                            system.runTimeout(() => {
-                                                mob.dimension.getPlayers({
-                                                    location: mob.location, maxDistance: 30
-                                                }).forEach(p => {
-                                                    p.playSound(`reflection`, { location: p.location });
-                                                    return;
-                                                });
-                                                Railgun(mob, 0);
-                                            }, 20);
-                                            return;
-                                        } else {
-                                            mob.applyDamage(50, { cause: EntityDamageCause.suicide, damagingEntity: entity });
-                                        };
+                                    } else {
+                                        try {
+                                            mob.applyDamage(200, { cause: EntityDamageCause.entityAttack, damagingEntity: entity });
+                                        } catch (error) {
+                                        }
                                     };
                                 }
-                            );
-                        };
-                        if (!shouldStop) {
-                            entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 0.1, { allowUnderwater: true, breaksBlocks: isBlockBreak() });
-                        };
+                            };
+
+                            if (!shouldStop) {
+                                entity.dimension.createExplosion(location.offsetDirct(0, 2, i * 4, direction), 0.1, { allowUnderwater: true, breaksBlocks: isBlockBreak() });
+                            };
+                        }
                     } catch (error) { };
                 }, Math.ceil(i / 5));
             };

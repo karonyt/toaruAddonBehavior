@@ -61,9 +61,9 @@ export function AerohandParameterForm(player) {
     const form = new ModalFormData();
 
     form.title({ translate: 'form.aerohand.setting.title' });
-    form.slider({ translate: 'form.aerohand.setting.button.horizontal.x' }, 1, 10, { defaultValue: player.getDynamicProperty('aerohand.horizontal.x') ?? 1, valueStep: 1 });
-    form.slider({ translate: 'form.aerohand.setting.button.horizontal.z' }, 1, 10, { defaultValue: player.getDynamicProperty('aerohand.horizontal.z') ?? 1, valueStep: 1 });
-    form.slider({ translate: 'form.aerohand.setting.button.vertical' }, 1, 15, { defaultValue: player.getDynamicProperty('aerohand.vertical') ?? 1, valueStep: 1 });
+    form.slider({ translate: 'form.aerohand.setting.button.horizontal.x' }, 1, 20, { defaultValue: player.getDynamicProperty('aerohand.horizontal.x') ?? 1, valueStep: 1 });
+    form.slider({ translate: 'form.aerohand.setting.button.horizontal.z' }, 1, 20, { defaultValue: player.getDynamicProperty('aerohand.horizontal.z') ?? 1, valueStep: 1 });
+    form.slider({ translate: 'form.aerohand.setting.button.vertical' }, 1, 30, { defaultValue: player.getDynamicProperty('aerohand.vertical') ?? 1, valueStep: 1 });
     form.slider({ translate: 'form.aerohand.setting.button.maxlength' }, 2, 20, { defaultValue: player.getDynamicProperty('aerohand.maxlength') ?? 1, valueStep: 1 });
 
     form.show(player).then((rs) => {
