@@ -1,4 +1,4 @@
-import { BlockVolume, Entity, EntityDamageCause, Player, system } from "@minecraft/server";
+import { BlockVolume, EasingType, Entity, EntityDamageCause, Player, system, world } from "@minecraft/server";
 import { Vec3 } from "../../../lib/utils/vec3";
 import { isBlockBreak } from "../../../lib/utils/util";
 
@@ -102,10 +102,20 @@ export function Railgun(entity, time) {
             entity.runCommand(`inputpermission set @s camera disabled`);
             entity.runCommand(`inputpermission set @s movement disabled`);
         };
+        const { x, y, z } = entity.location;
+        const location = new Vec3(x, y, z);
+        const direction = entity.getViewDirection();
+        const rotation = entity.getRotation();
+        if (entity.getDynamicProperty('isCameraOnSkill') && (entity instanceof Player)) {
+            entity.camera.setCamera('minecraft:free', { location: location.offsetDirct(-2, 0, 2, direction), rotation: { x: rotation.x, y: rotation.y - 150 } });
+            system.runTimeout(() => {
+                entity.camera.setCamera('minecraft:free', { location: location.offsetDirct(-20, 3, 5, direction), rotation: { x: rotation.x, y: rotation.y - 45 }, easeOptions: { easeType: EasingType.Linear, easeTime: 3 } });
+            }, 2);
+            system.runTimeout(() => {
+                entity.camera.clear();
+            }, 63);
+        };
         system.runTimeout(() => {
-            const { x, y, z } = entity.location;
-            const location = new Vec3(x, y, z);
-            const direction = entity.getViewDirection();
             for (let i = 0; i < 13; i++) {
                 if (shouldStop) {
                     if (!entity.dimension.getBlock(location.offsetDirct(0, 1, i * 4 + (i2 / 4), direction))?.isAir) {
@@ -115,7 +125,7 @@ export function Railgun(entity, time) {
                     };
                 };
                 try {
-                    entity.dimension.spawnParticle(`karo:big_electronics_particle`, location.offsetDirct(0, 1, i * 4, direction));
+                    entity.dimension.spawnParticle(`karo:super_big_electronics_particle`, location.offsetDirct(0, 1, i * 4, direction));
                 } catch (error) { }
                 system.runTimeout(() => {
                     try {

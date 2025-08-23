@@ -45,3 +45,48 @@ function settingForm(player) {
         player.sendMessage({ translate: "updated" });
     });
 }
+
+world.afterEvents.itemUse.subscribe((ev) => {
+    const { source: player, itemStack } = ev;
+
+    if (itemStack.typeId != 'mc:usersetting') return;
+
+    if (player.playerPermissionLevel != PlayerPermissionLevel.Operator) return;
+
+    userSettingForm(player);
+});
+
+system.beforeEvents.startup.subscribe((ev) => {
+    ev.customCommandRegistry.registerCommand({
+        name: 'toaru:usersetting',
+        description: 'ユーザー設定画面を開きます',
+        permissionLevel: CommandPermissionLevel.Admin,
+    }, (origin, ...args) => {
+        system.run(() => {
+            if (!origin?.sourceEntity) return;
+
+            const player = origin.sourceEntity;
+
+            userSettingForm(player);
+        });
+    });
+});
+
+/**
+ * 
+ * @param {Player} player 
+ */
+function userSettingForm(player) {
+    const form = new ModalFormData();
+
+    form.title("ユーザー設定 / User Setting");
+    form.toggle({ translate: "form.usersetting.toggle.label.camera" }, { defaultValue: player.getDynamicProperty("isCameraOnSkill") });
+    form.show(player).then((rs) => {
+        if (rs.canceled) {
+            return;
+        };
+
+        player.setDynamicProperty("isCameraOnSkill", rs.formValues[0]);
+        player.sendMessage({ translate: "updated" });
+    });
+}
