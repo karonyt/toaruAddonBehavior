@@ -5,7 +5,18 @@
       "identifier": "karo:accelerator",
       "is_spawnable": true,
       "is_summonable": true,
-      "is_experimental": false
+      "is_experimental": false,
+      "properties": {
+        "property:power_variant": {
+          "range": [
+            0,
+            999999
+          ],
+          "default": 0,
+          "type": "int",
+          "client_sync": true
+        }
+      }
     },
     "component_groups": {
       "fly_attack": {
@@ -64,6 +75,26 @@
         "value": 60,
         "max": 60
       },
+      "target": {
+        "minecraft:timer": {
+          "time": [
+            0.2,
+            0.4
+          ],
+          "looping": true,
+          "time_down_event": {
+            "event": "attack",
+            "target": "self"
+          }
+        }
+      },
+      "minecraft:on_target_acquired": {
+        "event": "target"
+      },
+      "minecraft:on_target_escape": {
+        "event": "remove_target"
+      },
+      "minecraft:annotation.open_door": {},
       "minecraft:hurt_on_condition": {
         "damage_conditions": [
           {
@@ -644,6 +675,32 @@
       }
     },
     "events": {
+      "attack": {
+        "queue_command": {
+          "command": [
+            "scriptevent karo:accelerator_attack"
+          ]
+        }
+      },
+      "target": {
+        "queue_command": {
+          "command": [
+            "event entity @s attack"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "target"
+          ]
+        }
+      },
+      "remove_target": {
+        "remove": {
+          "component_groups": [
+            "target"
+          ]
+        }
+      },
       "accelerator_start_fly": {
         "add": {
           "component_groups": [
