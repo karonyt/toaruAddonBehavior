@@ -10,41 +10,86 @@
         "property:power_variant": {
           "range": [
             0,
-            999999
+            99999
           ],
           "default": 0,
           "type": "int",
+          "client_sync": true
+        },
+        "property:fly_until": {
+          "range": [
+            0,
+            2147483647
+          ],
+          "default": 0,
+          "type": "int",
+          "client_sync": true
+        },
+        "property:speed_until": {
+          "range": [
+            0,
+            2147483647
+          ],
+          "default": 0,
+          "type": "int",
+          "client_sync": true
+        },
+        "property:is_flying": {
+          "default": false,
+          "type": "bool",
+          "client_sync": true
+        },
+        "property:is_high_speed": {
+          "default": false,
+          "type": "bool",
           "client_sync": true
         }
       }
     },
     "component_groups": {
-      "fly_attack": {
-        "minecraft:navigation.float": {
-          "can_path_over_water": true
-        },
-        "minecraft:behavior.float_wander": {
-          "priority": 2,
-          "must_reach": true
-        },
-        "minecraft:can_fly": {},
-        "minecraft:movement": {
-          "value": 0.02
-        },
+      "normal": {
+        "minecraft:movement.basic": {},
         "minecraft:navigation.walk": {
-          "is_amphibious": false,
-          "can_pass_doors": false,
-          "can_walk": false,
-          "can_break_doors": false
+          "is_amphibious": true,
+          "can_pass_doors": true,
+          "can_walk": true,
+          "can_break_doors": true
+        }
+      },
+      "fly_attack": {
+        "minecraft:can_fly": {},
+        "minecraft:movement.fly": {},
+        "minecraft:flying_speed": {
+          "value": 0.5
+        },
+        "minecraft:navigation.fly": {
+          "can_path_over_water": true,
+          "can_path_from_air": true
         }
       },
       "high_speed": {
         "minecraft:movement": {
-          "value": 1
+          "value": 0.5
+        }
+      },
+      "target": {
+        "minecraft:timer": {
+          "time": [
+            0.2,
+            0.4
+          ],
+          "looping": true,
+          "time_down_event": {
+            "event": "attack",
+            "target": "self"
+          }
         }
       }
     },
     "components": {
+      "minecraft:follow_range": {
+        "value": 64
+      },
       "minecraft:scale": {
         "value": 0.9
       },
@@ -74,19 +119,6 @@
       "minecraft:health": {
         "value": 60,
         "max": 60
-      },
-      "target": {
-        "minecraft:timer": {
-          "time": [
-            0.2,
-            0.4
-          ],
-          "looping": true,
-          "time_down_event": {
-            "event": "attack",
-            "target": "self"
-          }
-        }
       },
       "minecraft:on_target_acquired": {
         "event": "target"
@@ -119,17 +151,7 @@
           }
         ]
       },
-      "minecraft:attack": {
-        "damage": 4
-      },
       "minecraft:conditional_bandwidth_optimization": {},
-      "minecraft:movement.basic": {},
-      "minecraft:navigation.walk": {
-        "is_amphibious": true,
-        "can_pass_doors": true,
-        "can_walk": true,
-        "can_break_doors": true
-      },
       "minecraft:jump.static": {},
       "minecraft:can_climb": {},
       "minecraft:environment_sensor": {
@@ -157,6 +179,37 @@
       "minecraft:behavior.random_look_around": {
         "priority": 9
       },
+      "minecraft:behavior.melee_attack": {
+        "reach_multiplier": 2.5,
+        "cooldown_time": 1.0,
+        "priority": 1
+      },
+      "minecraft:attack": {
+        "damage": 1
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "alert_same_type": true,
+        "priority": 3,
+        "entity_types": {
+          "filters": {
+            "all_of": [
+              {
+                "test": "is_family",
+                "subject": "other",
+                "operator": "not",
+                "value": "sisters"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "operator": "not",
+                "value": "attack"
+              }
+            ]
+          },
+          "max_dist": 64
+        }
+      },
       "minecraft:behavior.nearest_attackable_target": {
         "priority": 2,
         "must_see": true,
@@ -173,7 +226,7 @@
                 }
               ]
             },
-            "max_dist": 35
+            "max_dist": 64
           }
         ]
       },
@@ -675,6 +728,13 @@
       }
     },
     "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "normal"
+          ]
+        }
+      },
       "attack": {
         "queue_command": {
           "command": [
@@ -706,13 +766,27 @@
           "component_groups": [
             "fly_attack"
           ]
+        },
+        "remove": {
+          "component_groups": [
+            "normal"
+          ]
         }
       },
       "accelerator_stop_fly": {
+        "add": {
+          "component_groups": [
+            "normal"
+          ]
+        },
         "remove": {
           "component_groups": [
             "fly_attack"
           ]
+        },
+        "set_property": {
+          "property:fly_until": 0,
+          "property:is_flying": false
         }
       },
       "accelerator_start_high_speed": {
@@ -727,6 +801,10 @@
           "component_groups": [
             "high_speed"
           ]
+        },
+        "set_property": {
+          "property:speed_until": 0,
+          "property:is_high_speed": false
         }
       }
     }

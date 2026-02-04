@@ -4,6 +4,7 @@ import "./data/science/science";
 import { AerohandParameterForm, Knockback_straight } from "./data/science/power/aerohand";
 import { Meltdowner, MeltdownerStandby } from "./data/science/power/meltdowner";
 import { ModalFormData } from "@minecraft/server-ui";
+import "./entities/index";
 import "./system/system";
 
 world.afterEvents.itemUse.subscribe((ev) => {

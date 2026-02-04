@@ -23,12 +23,50 @@ export function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function getDistance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    const dz = a.z - b.z;
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+/**
+ * 
+ * @param {Entity} entity 
+ * @returns 
+ */
+export function buildContext(entity) {
+    const target = entity.target;
+    if (!target) return null;
+
+    return {
+        target,
+        distance: getDistance(entity.location, target.location),
+        isFlying: entity.getProperty("property:is_flying") || false,
+        isHighSpeed: entity.getProperty("property:is_high_speed") || false,
+    };
+}
+
+export function pickSkill(ctx, skills) {
+    const pool = [];
+
+    for (const s of skills) {
+        if (!s.condition(ctx)) continue;
+        for (let i = 0; i < s.weight; i++) {
+            pool.push(s);
+        }
+    }
+
+    if (pool.length === 0) return null;
+    return pool[getRandom(0, pool.length - 1)];
+}
+
 /**
  * 
  * @returns {boolean}
  */
 export function isBlockBreak() {
     const isBreak = world.getDynamicProperty("isBlockBreakBySkill");
-    if(!isBreak) return true;
-    if(isBreak) return false;
+    if (!isBreak) return true;
+    if (isBreak) return false;
 }
