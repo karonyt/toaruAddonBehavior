@@ -1,0 +1,54 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "karo:meltdowner_bullet",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false,
+			"runtime_identifier": "minecraft:snowball"
+		},
+		"component_groups": {
+			"despawn": {
+				"minecraft:instant_despawn": {}
+			}
+		},
+		"components": {
+			"minecraft:collision_box": {
+				"width": 0.5,
+				"height": 0.5
+			},
+			"minecraft:projectile": {
+				"power": 1.5,
+				"gravity": 0,
+				"inertia": 1.5,
+				"uncertaintyBase": 3,
+				"uncertaintyMultiplier": 3,
+				"offset": [
+					0,
+					0,
+					0
+				],
+				"catchFire": false
+			},
+			"minecraft:physics": {},
+			"minecraft:timer": {
+				"looping": false,
+				"time": 2,
+				"randomInterval": false,
+				"time_down_event": {
+					"event": "despawn"
+				}
+			}
+		},
+		"events": {
+			"despawn": {
+				"add": {
+					"component_groups": [
+						"despawn"
+					]
+				}
+			}
+		}
+	}
+}

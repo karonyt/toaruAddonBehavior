@@ -44,6 +44,14 @@
           "type": "bool",
           "client_sync": true
         }
+      },
+      "scripts": {
+        "animate": [
+          "fly"
+        ]
+      },
+      "animations": {
+        "fly": "controller.animation.accelerator.fly"
       }
     },
     "component_groups": {
@@ -54,22 +62,27 @@
           "can_pass_doors": true,
           "can_walk": true,
           "can_break_doors": true
+        },
+        "minecraft:physics": {},
+        "minecraft:movement": {
+          "value": 0.25
         }
       },
       "fly_attack": {
         "minecraft:can_fly": {},
         "minecraft:movement.fly": {},
         "minecraft:flying_speed": {
-          "value": 0.5
+          "value": 1
         },
         "minecraft:navigation.fly": {
           "can_path_over_water": true,
           "can_path_from_air": true
-        }
+        },
+        "minecraft:physics": {}
       },
       "high_speed": {
         "minecraft:movement": {
-          "value": 0.5
+          "value": 0.4
         }
       },
       "target": {
@@ -189,7 +202,7 @@
       },
       "minecraft:behavior.hurt_by_target": {
         "alert_same_type": true,
-        "priority": 3,
+        "priority": 1,
         "entity_types": {
           "filters": {
             "all_of": [
@@ -230,7 +243,6 @@
           }
         ]
       },
-      "minecraft:physics": {},
       "minecraft:pushable": {
         "is_pushable": true,
         "is_pushable_by_piston": true
@@ -724,7 +736,7 @@
       },
       "minecraft:boss": {
         "name": "entity.karo:accelerator.name",
-        "hud_range": 10
+        "hud_range": 25
       }
     },
     "events": {
@@ -757,31 +769,38 @@
       "remove_target": {
         "remove": {
           "component_groups": [
-            "target"
-          ]
+            "target",
+            "fly_attack",
+            "high_speed"
+          ],
+          "add": {
+            "component_groups": [
+              "normal"
+            ]
+          }
         }
       },
       "accelerator_start_fly": {
-        "add": {
-          "component_groups": [
-            "fly_attack"
-          ]
-        },
         "remove": {
           "component_groups": [
             "normal"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "fly_attack"
           ]
         }
       },
       "accelerator_stop_fly": {
-        "add": {
-          "component_groups": [
-            "normal"
-          ]
-        },
         "remove": {
           "component_groups": [
             "fly_attack"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "normal"
           ]
         },
         "set_property": {

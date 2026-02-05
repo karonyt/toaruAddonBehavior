@@ -29,6 +29,13 @@ const SKILLS = [
     }
 ];
 
+world.afterEvents.entityLoad.subscribe((ev) => {
+    const { entity } = ev;
+    if (!entity.typeId != 'karo:accelerator') return;
+    entity.triggerEvent("accelerator_stop_fly");
+    entity.triggerEvent("accelerator_stop_high_speed");
+});
+
 system.afterEvents.scriptEventReceive.subscribe((ev) => {
     if (ev.id !== "karo:accelerator_attack") return;
 
@@ -50,14 +57,14 @@ system.afterEvents.scriptEventReceive.subscribe((ev) => {
     if (ctx.isHighSpeed && ctx.distance < 3) {
         entity.triggerEvent("accelerator_stop_high_speed");
     }
-    
+
     const skill = pickSkill(ctx, SKILLS);
     if (!skill) return;
 
     entity.setProperty("property:power_variant", skill.id);
     cooltimeMap.set(entity.id, now + skill.cooltime);
 
-    world.sendMessage(`${skill.id}`)
+    //world.sendMessage(`${skill.id}`)
     AcceleratorAttack(entity, skill.id);
 });
 

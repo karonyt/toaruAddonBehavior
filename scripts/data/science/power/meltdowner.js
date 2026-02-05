@@ -1,145 +1,229 @@
-import { BlockVolume, Entity, EntityDamageCause, Player, system, world } from "@minecraft/server";
+import {
+    BlockPermutation,
+    EntityDamageCause,
+    system,
+    world
+} from "@minecraft/server";
 import { Vec3 } from "../../../lib/utils/vec3";
 import { isBlockBreak } from "../../../lib/utils/util";
 
-const meltDownerCount = new Map();
-
+/* ===============================
+   発射位置（10スロット）
+================================ */
 const meltdownerPosition = [
-    0, 1, 0.5,
-    0.3, 1, 0.5,
-    -0.5, 1.5, 0,
-    -0.3, 0, -0.5,
-    -0.5, 0, 0.5,
-    1, 0.5, -0.5,
-    -0.7, 1.2, -0.3,
-    0, 0.3, -0.4,
-    0.2, 0.8, -0.2,
-    -1, 2.4, 0,
-]
+    0, 2, 0.5,
+    0.3, 2, 0.5,
+    -0.5, 2.5, 0,
+    -0.3, 1, -0.5,
+    -0.5, 1, 0.5,
+    1, 1.5, -0.5,
+    -0.7, 2.2, -0.3,
+    0, 0.3, -1.4,
+    0.2, 0.8, -1.2,
+    -1, 3.4, 0,
+];
 
-/**
- * @param {Entity} entity 
- */
+/* ===============================
+   スロット管理
+================================ */
+const meltDownerSlots = new Map(); // entityId -> boolean[10]
+
+function getSlots(entityId) {
+    let slots = meltDownerSlots.get(entityId);
+    if (!slots) {
+        slots = Array(10).fill(false);
+        meltDownerSlots.set(entityId, slots);
+    }
+    return slots;
+}
+
+function acquireSlot(entityId) {
+    const slots = getSlots(entityId);
+    const index = slots.indexOf(false);
+    if (index === -1) return null;
+    slots[index] = true;
+    return index;
+}
+
+function releaseSlot(entityId, index) {
+    const slots = meltDownerSlots.get(entityId);
+    if (!slots) return;
+    slots[index] = false;
+}
+
+/* ===============================
+   スタンバイ演出
+================================ */
 export function MeltdownerStandby(entity) {
-    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id, 0).get(entity.id);
-    const { x, y, z } = entity.location;
-    const location = new Vec3(x, y, z);
-    const direction = entity.getViewDirection();
+    const base = new Vec3(
+        entity.location.x,
+        entity.location.y,
+        entity.location.z
+    );
+    const dir = entity.getViewDirection();
+
     for (let i = 0; i < 10; i++) {
-        if (i === 10) return;
-        entity.dimension.spawnParticle(`karo:meltdowner_standby`, location.offsetDirct(meltdownerPosition[i * 3], meltdownerPosition[i * 3 + 1], meltdownerPosition[i * 3 + 2], direction));
-    };
-};
+        entity.dimension.spawnParticle(
+            "karo:meltdowner_standby",
+            base.offsetDirct(
+                meltdownerPosition[i * 3],
+                meltdownerPosition[i * 3 + 1],
+                meltdownerPosition[i * 3 + 2],
+                dir
+            )
+        );
+    }
+}
 
-/**
- * @param {Entity} entity 
- * @param {number} time
- */
-export function Meltdowner(entity, time) {
-    let shouldStop = false;
-    let stop = false;
-    const meltdowner = entity.dimension.spawnEntity('armor_stand', entity.location);
-    meltdowner.setRotation(entity.getRotation());
-    let count = meltDownerCount.get(entity.id) ?? meltDownerCount.set(entity.id, 0).get(entity.id);
-    meltDownerCount.set(entity.id, count + 1);
-    if (count === 9) return;
-    try {
-        if ((entity instanceof Player)) {
-            entity.runCommand(`inputpermission set @s movement disabled`);
-        } else {
-            entity.addEffect(`slowness`, time + 10, { amplifier: 10 + time, showParticles: false });
-        };
-        const { x, y, z } = meltdowner.location;
-        const location = new Vec3(x, y, z);
-        const direction = meltdowner.getViewDirection();
+/* ===============================
+   発射本体
+================================ */
+export function Meltdowner(entity, chargeTime) {
+    const slot = acquireSlot(entity.id);
+    if (slot === null) return;
 
-        for (let chargeTime = 0; chargeTime < time; chargeTime++) {
-            system.runTimeout(() => {
-                entity.dimension.spawnParticle(`karo:meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2], direction));
-                entity.addTag(`meltdown_charge`);
-                if ((entity instanceof Player)) {
-                    if (chargeTime === time - 10) {
-                        entity.dimension.playSound(`meltdowner.shot`, entity.location)
-                    };
-                    const selectedItem = entity.getComponent(`inventory`).container.getItem(entity.selectedSlotIndex);
-                    if (!selectedItem || selectedItem?.nameTag != `原子崩し`) {
-                        entity.removeTag(`cancel_meltdown`);
-                        entity.removeTag(`meltdown_charge`);
-                        return;
-                    };
-                };
-                if (entity.hasTag(`cancel_meltdown`)) {
-                    entity.removeTag(`cancel_meltdown`);
-                    entity.removeTag(`meltdown_charge`);
-                    return;
-                };
-            }, chargeTime);
-        };
+    const base = new Vec3(
+        entity.location.x,
+        entity.location.y,
+        entity.location.z
+    );
+    const dir = entity.getViewDirection();
+
+    /* --- チャージ --- */
+    for (let t = 0; t < chargeTime; t++) {
         system.runTimeout(() => {
-            for (let i = 0; i < 13; i++) {
-                system.runTimeout(() => {
-                    try {
-                        if (meltdowner.hasTag('stop')) return;
-                        if (meltdowner.hasTag('shouldStop')) {
-                            if (!meltdowner.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
-                                let value = meltDownerCount.get(entity.id) ?? 1;
-                                if (value === 0) return;
-                                meltDownerCount.set(entity.id, value - 1);
-                                return;
-                            } else {
-                                meltdowner.removeTag('shouldStop');
-                            };
-                        };
-                        for (let i2 = 0; i2 < 17; i2++) {
-                            if (!entity.dimension.getBlock(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction))?.isAir) {
-                                try {
-                                    entity.dimension.createExplosion(location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction), 2, { allowUnderwater: true, breaksBlocks: isBlockBreak() });
-                                } catch (error) { }
-                                meltdowner.addTag('shouldStop');
-                            };
-                            entity.dimension.spawnParticle(`karo:meltdowner_charge`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], meltdownerPosition[count * 3 + 2], direction));
-                            entity.dimension.spawnParticle(`karo:meltdowner_orbit`, location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction));
-                            for (const mob of entity.dimension.getEntities({ location: location.offsetDirct(meltdownerPosition[count * 3], meltdownerPosition[count * 3 + 1], (meltdownerPosition[count * 3 + 2]) + i * 4 + (i2 / 4), direction), maxDistance: 0.5 })) {
-                                if (mob.hasTag(`imagine_breaker`)) {
-                                    meltdowner.addTag('stop');
-                                    return;
-                                };
-                                if (mob.id !== entity.id && mob.id !== meltdowner.id) {
-                                    if (mob.hasTag(`ippou_tuukou`)) {
-                                        system.runTimeout(() => {
-                                            mob.dimension.getPlayers({
-                                                location: mob.location, maxDistance: 30
-                                            }).forEach(p => {
-                                                p.playSound(`reflection`, { location: p.location });
-                                                return;
-                                            });
-                                            Meltdowner(mob, 0);
-                                        }, 20);
-                                        meltdowner.addTag('stop');
-                                        return;
-                                    } else {
-                                        mob.applyDamage(50, { cause: EntityDamageCause.selfDestruct, damagingEntity: entity });
-                                    };
-                                };
-                            }
-                        };
-                    } catch (error) {
-                        let value = meltDownerCount.get(entity.id) ?? 1;
-                        if (value === 0) return;
-                        meltDownerCount.set(entity.id, value - 1);
-                    };
-                }, Math.ceil(i / 5));
-            };
-        }, time);
-        system.runTimeout(() => {
-            if ((entity instanceof Player)) {
-                entity.removeTag(`meltdown_charge`);
-                entity.runCommand(`inputpermission set @s movement enabled`);
-            };
-        }, time + 20);
-    } catch (error) {
-        let value = meltDownerCount.get(entity.id) ?? 1;
-        if (value === 0) return;
-        meltDownerCount.set(entity.id, value - 1);
-    };
-};
+            const pos = base.offsetDirct(
+                meltdownerPosition[slot * 3],
+                meltdownerPosition[slot * 3 + 1],
+                meltdownerPosition[slot * 3 + 2],
+                dir
+            );
+            entity.dimension.spawnParticle(
+                "karo:meltdowner_charge",
+                pos
+            );
+        }, t);
+    }
+
+    /* --- 発射 --- */
+    system.runTimeout(() => {
+        const shootPos = base.offsetDirct(
+            meltdownerPosition[slot * 3],
+            meltdownerPosition[slot * 3 + 1],
+            meltdownerPosition[slot * 3 + 2],
+            dir
+        );
+
+        const bullet = entity.dimension.spawnEntity(
+            "karo:meltdowner_bullet",
+            shootPos
+        );
+
+        const proj = bullet.getComponent("projectile");
+        proj.owner = entity;
+        proj.shoot(dir);
+
+        bullet.addTag(`meltdowner_slot_${slot}`);
+        bullet.addTag(`meltdowner_owner_${entity.id}`);
+    }, chargeTime);
+}
+
+/* ===============================
+   弾道処理（ビーム風）
+================================ */
+const lastPos = new Map();
+const STEP = 0.25;
+
+world.afterEvents.entitySpawn.subscribe(ev => {
+    if (ev.entity.typeId === "karo:meltdowner_bullet") {
+        lastPos.set(ev.entity.id, ev.entity.location);
+    }
+});
+
+world.beforeEvents.entityRemove.subscribe(ev => {
+    const e = ev.removedEntity;
+    if (!e || e.typeId !== "karo:meltdowner_bullet") return;
+
+    lastPos.delete(e.id);
+
+    const slotTag = e.getTags().find(t => t.startsWith("meltdowner_slot_"));
+    const ownerTag = e.getTags().find(t => t.startsWith("meltdowner_owner_"));
+    if (!slotTag || !ownerTag) return;
+
+    const slot = Number(slotTag.replace("meltdowner_slot_", ""));
+    const ownerId = ownerTag.replace("meltdowner_owner_", "");
+
+    releaseSlot(ownerId, slot);
+});
+
+/* ===============================
+   ブロック破壊・パーティクル
+================================ */
+const blockList = [
+    "minecraft:obsidian",
+    "minecraft:bedrock",
+    "minecraft:crying_obsidian"
+];
+
+system.runInterval(() => {
+    for (const dimId of ["overworld", "nether", "the_end"]) {
+        const dim = world.getDimension(dimId);
+
+        for (const e of dim.getEntities({ type: "karo:meltdowner_bullet" })) {
+            const prev = lastPos.get(e.id);
+            const cur = e.location;
+            if (!prev) {
+                lastPos.set(e.id, cur);
+                continue;
+            }
+
+            const dx = cur.x - prev.x;
+            const dy = cur.y - prev.y;
+            const dz = cur.z - prev.z;
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            const steps = Math.max(1, Math.floor(dist / STEP));
+
+            let removed = false;
+
+            for (let i = 0; i <= steps; i++) {
+                const t = i / steps;
+                const pos = {
+                    x: prev.x + dx * t,
+                    y: prev.y + dy * t,
+                    z: prev.z + dz * t
+                };
+
+                try {
+                    dim.spawnParticle("karo:meltdowner_orbit", pos);
+                } catch {}
+
+                try {
+                    const block = dim.getBlock(pos);
+                    if (!block) continue;
+
+                    // === ここが追加点 ===
+                    if (blockList.includes(block.typeId)) {
+                        e.remove();
+                        lastPos.delete(e.id);
+                        removed = true;
+                        break;
+                    }
+
+                    if (
+                        block.isAir ||
+                        block.isLiquid ||
+                        !isBlockBreak()
+                    ) continue;
+
+                    block.setPermutation(
+                        BlockPermutation.resolve("air")
+                    );
+                } catch {}
+            }
+
+            if (!removed) {
+                lastPos.set(e.id, { ...cur });
+            }
+        }
+    }
+}, 1);

@@ -1,0 +1,76 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "karo:railgun_bullet",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false,
+			"runtime_identifier": "minecraft:snowball"
+		},
+		"component_groups": {
+			"despawn": {
+				"minecraft:instant_despawn": {}
+			}
+		},
+		"components": {
+			"minecraft:knockback_resistance": {
+				"value": 9999
+			},
+			"minecraft:collision_box": {
+				"width": 2,
+				"height": 2
+			},
+			"minecraft:projectile": {
+				"power": 2,
+				"gravity": 0,
+				"inertia": 1.5,
+				"uncertaintyBase": 3,
+				"uncertaintyMultiplier": 3,
+				"offset": [
+					0,
+					0,
+					0
+				],
+				"catchFire": false
+			},
+			"minecraft:physics": {},
+			"minecraft:timer": {
+				"looping": false,
+				"time": 2,
+				"randomInterval": false,
+				"time_down_event": {
+					"event": "despawn"
+				}
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "has_damage",
+										"subject": "self",
+										"operator": "==",
+										"value": "block_explosion"
+									}
+								]
+							}
+						},
+						"deals_damage": false
+					}
+				]
+			}
+		},
+		"events": {
+			"despawn": {
+				"add": {
+					"component_groups": [
+						"despawn"
+					]
+				}
+			}
+		}
+	}
+}
